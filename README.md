@@ -26,7 +26,7 @@ Install dependencies with npm
 This is a vue cli project
 
 Run ```npm run serve ```.
-Open browser at localhost:3000
+Open browser at localhost:8080
 
 
 ## Postman
