@@ -21,3 +21,71 @@ Run ```npm run serve ```.
 Open browser at localhost:3000
 
 
+## Postman
+
+Import the following json into postman to see the fileuplod in action:
+
+```
+{
+	"info": {
+		"_postman_id": "d6c4afb3-2a46-47f6-bd3e-6c69552edde2",
+		"name": "treemap",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "post files",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-project-title",
+						"value": "dd",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files[]",
+							"contentType": "multipart/form-data",
+							"type": "file",
+							"src": [
+								"/home/sili/java_error_in_IDEA_27935.log",
+								"/home/sili/stale_outputs_checked"
+							]
+						},
+						{
+							"key": "x-project-title",
+							"value": "\"dd\"",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8888/api/projects",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"projects"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
+```
+
+
