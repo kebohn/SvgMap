@@ -13,7 +13,10 @@ Serve the public directory with ```php -S localhost:8888 -t public/ ```
 Open browser at localhost:8888/api
 
 ### Attention!:
-
+Make public/uploads directory writable with 
+```
+chmod -R 777 public/uploads
+```
 Set post_max_size = 20M and upload_max_filesize = 20M and max_file_uploads = 15 in php.ini for example
 
 # In frontend
