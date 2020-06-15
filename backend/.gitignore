@@ -200,3 +200,6 @@ npm-debug.log
 yarn-error.log
 
 # End of https://www.gitignore.io/api/vue,code,vuejs,phpunit,intellij,composer,phpstorm
+
+public/uploads/*
+!/**/.gitkeep

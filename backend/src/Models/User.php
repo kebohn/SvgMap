@@ -6,21 +6,22 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  *
  * @ORM\Entity
- * @ORM\Table(name="users")
+ * @ORM\Table(name="user")
  */
 class User {
+
     /**
+     * @var integer
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string")
      */
-
-    protected $name;
+    private $name;
 
     public function getId() {
         return $this->id;
@@ -33,4 +34,6 @@ class User {
     public function setName($name) {
         $this->name = $name;
     }
+
+
 }

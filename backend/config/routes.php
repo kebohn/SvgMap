@@ -54,7 +54,7 @@ return function (App $app) {
         });
 
         $group->get('/projects', ProjectController::class . ':getProjects');
-        $group->post('/projects', ProjectController::class . ':createProjects');
+        $group->post('/projects', ProjectController::class . ':createProject');
         $group->get('/projects/{projectId}', ProjectController::class . ':getProject');
         $group->delete('/projects/{projectId}', ProjectController::class . ':deleteProject');
 

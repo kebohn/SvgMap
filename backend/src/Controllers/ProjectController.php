@@ -19,6 +19,10 @@ class ProjectController {
     }
 
     public function createProject(Request $request, Response $response, $args){
+            $name = $request->getHeader('x-project-title')[0];
+            $files = $request->getUploadedFiles();
+            $this->projectService->createProject($name, $files);
+            return $response->withStatus(200);
         
     }
 

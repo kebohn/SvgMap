@@ -3,9 +3,15 @@ Run ```sudo mysql <  setup/init.sql``` to create the database
 
 Run ```php vendor/bin/doctrine orm:schema-tool:create ``` to create the schema, resp. "drop" to delete and "update" to update the schema
 
-Serve the public directory with ```php -S localhost:8080 -t public/ ```
+Run the tests ``` php vendor/bin/phpunit tests/ ```
 
-Open browser at localhost:8080/api
+Serve the public directory with ```php -S localhost:8888 -t public/ ```
+
+Open browser at localhost:8888/api
+
+### Attention!:
+
+Set post_max_size = 20M and upload_max_filesize = 20M and max_file_uploads = 15 in php.ini for example
 
 # In frontend
 

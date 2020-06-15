@@ -5,6 +5,7 @@ $settings = [];
 $settings['root'] = dirname(__DIR__);
 $settings['temp'] = $settings['root'] . '/tmp';
 $settings['public'] = $settings['root'] . '/public';
+$settings['uploads'] = $settings['public'] . '/uploads';
 
 $settings['error_handler_middleware'] = [
     'display_error_details' => true,
