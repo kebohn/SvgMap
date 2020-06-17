@@ -10,17 +10,21 @@
         </b-navbar-item>
       </template>
       <template slot="start">
-        <b-navbar-item href="#">
-          Home
+        <b-navbar-item>
+          <router-link to = "/">
+            Home
+          </router-link>
         </b-navbar-item>
-        <b-navbar-item href="#">
-          Documentation
+        <b-navbar-item>
+          <router-link to = "/upload">
+            Upload
+          </router-link>
         </b-navbar-item>
         <b-navbar-dropdown label="Info">
-          <b-navbar-item href="#">
+          <b-navbar-item href>
             About
           </b-navbar-item>
-          <b-navbar-item href="#">
+          <b-navbar-item>
             Contact
           </b-navbar-item>
         </b-navbar-dropdown>

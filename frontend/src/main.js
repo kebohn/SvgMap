@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import router from '@/router.js'
+import axios from 'axios'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 import '@/assets/css/spacing.scss'
@@ -23,6 +24,7 @@ Vue.use(Buefy, {
 })
 Vue.use(VueRouter)
 
+Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
 
