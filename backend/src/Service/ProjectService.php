@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Models\File;
 use App\Models\Project;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMException;
 use Psr\Http\Message\UploadedFileInterface;
 use Selective\Config\Configuration;
 
@@ -57,7 +58,7 @@ class ProjectService {
 
                 } catch (\Exception $e) {
                     $this->em->rollback();
-                    // TODO remove created directory and files uploadDir.'/'. $project->getGeneratedName().
+                    $this->deleteDirectory($uploadDir.'/'.$project->getGeneratedName());
                     throw $e;
                 }
             }
@@ -68,6 +69,43 @@ class ProjectService {
         else {
             throw new \Exception('retry');
         }
+    }
+
+    /**
+     * @param $id
+     * @throws ORMException
+     */
+    public function deleteProject($id) {
+        try {
+            $projectRepository = $this->em->getRepository(Project::class);
+            $project = $projectRepository->find($id);
+            $generatedName = $project->getGeneratedName();
+            $this->em->remove($project);
+            $this->em->flush();
+            $this->deleteDirectory($this->configuration->getString('uploads').'/'.$generatedName);
+        } catch (ORMException $e) {
+            $this->em->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $str
+     * @return bool
+     */
+    public function deleteDirectory($str) {
+            if (is_file($str)) {
+                return unlink($str);
+            }
+            elseif (is_dir($str)) {
+                $files = glob(rtrim($str, '/').'/*');
+                foreach($files as $file) {
+                    $this->deleteDirectory($file);
+                }
+                return @rmdir($str);
+            } else {
+                return false;
+            }
     }
 
     public function getAllProjects() {

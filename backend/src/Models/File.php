@@ -36,6 +36,12 @@ class File {
     /**
      * @var Project
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="files", fetch="EAGER")
+     * @ORM\JoinColumn(
+     *      name="project_id",
+     *      referencedColumnName="id",
+     *      onDelete="CASCADE",
+     *      nullable=false
+     * )
      */
     private $project;
 

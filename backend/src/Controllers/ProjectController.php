@@ -36,7 +36,9 @@ class ProjectController {
     }
 
     public function deleteProject(Request $request, Response $response, $args){
-        
+        $id = $args['projectId'];
+        $this->projectService->deleteProject($id);
+        return $response->withStatus(200);
     }
 
     public function createFile(Request $request, Response $response, $args){
