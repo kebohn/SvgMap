@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <component :is='layout'>
     <router-view :layout.sync='layout'></router-view>
     </component>

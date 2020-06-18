@@ -1,10 +1,6 @@
 <template>
   <section>
-    <div class="field">
-      <b-switch v-model="newProject">Create new Project</b-switch>
-    </div>
-
-    <b-field v-if="newProject" label="ProjectName">
+    <b-field label="ProjectName">
       <b-input v-model="projectName"></b-input>
     </b-field>
     <b-field>
@@ -36,36 +32,6 @@
     </div>
     <div class="field is-grouped m-t-md is-pulled-right">
       <div class="control">
-          <b-dropdown v-model="isPublic" aria-role="list">
-            <button class="button is-primary" type="button" slot="trigger">
-              <template v-if="isPublic">
-                <span>Public</span>
-              </template>
-              <template v-else>
-                <span>Friends</span>
-              </template>
-            </button>
-
-            <b-dropdown-item :value="true" aria-role="listitem">
-              <div class="media">
-                <div class="media-content">
-                  <h3>Public</h3>
-                  <small>Everyone can see</small>
-                </div>
-              </div>
-            </b-dropdown-item>
-
-            <b-dropdown-item :value="false" aria-role="listitem">
-              <div class="media">
-                <div class="media-content">
-                  <h3>Friends</h3>
-                  <small>Only friends can see</small>
-                </div>
-              </div>
-            </b-dropdown-item>
-          </b-dropdown>
-      </div>
-      <div class="control">
         <button @click="submit()" class="button is-link">Submit</button>
       </div>
       <div class="control">
@@ -83,9 +49,6 @@ export default {
   data() {
     return {
       dropFiles: [],
-      projects: '',
-      isPublic: true,
-      newProject: true,
       projectName: ''
     };
   },
@@ -101,7 +64,7 @@ export default {
             'x-project-title' : this.projectName
           }
         }
-        );
+        ).then(response => console.log(response));
     },
     deleteDropFile(index, e) {
         console.log(e, e.currentTarget)

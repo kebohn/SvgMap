@@ -15,14 +15,19 @@ class ProjectController {
     }
 
     public function getProjects(Request $request, Response $response, $args){
-
+        $projects = $this->projectService->getAllProjects();
+        $payload = json_encode($projects);
+        $response->getBody()->write($payload);
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus(200);
     }
 
     public function createProject(Request $request, Response $response, $args){
-            $name = $request->getHeader('x-project-title')[0];
-            $files = $request->getUploadedFiles();
-            $this->projectService->createProject($name, $files);
-            return $response->withStatus(200);
+        $name = $request->getHeader('x-project-title')[0];
+        $files = $request->getUploadedFiles();
+        $this->projectService->createProject($name, $files);
+        return $response->withStatus(200);
         
     }
 

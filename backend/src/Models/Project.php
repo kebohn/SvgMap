@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repositories\ProjectRepository")
  * @ORM\Table(name="project")
  */
 class Project {
@@ -54,7 +54,6 @@ class Project {
         return $this->files;
     }
 
-
     public function __construct(string $name)
     {
         $this->generatedName = uniqid();
@@ -62,20 +61,23 @@ class Project {
         $this->files = new ArrayCollection();
     }
 
-
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
-    public function getRelPath() {
+    public function getRelPath()
+    {
         return $this->getId();
     }
 }

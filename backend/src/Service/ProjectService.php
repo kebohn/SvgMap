@@ -4,7 +4,6 @@ namespace App\Service;
 use App\Models\File;
 use App\Models\Project;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
 use Psr\Http\Message\UploadedFileInterface;
 use Selective\Config\Configuration;
 
@@ -67,8 +66,12 @@ class ProjectService {
             }
         }
         else {
-            throw new \Exception('äretry');
+            throw new \Exception('retry');
         }
     }
 
+    public function getAllProjects() {
+        $projectRepository = $this->em->getRepository(Project::class);
+        return $projectRepository->findAllProjectsDesc();
+    }
 }
