@@ -35,7 +35,7 @@ class File {
 
     /**
      * @var Project
-     * @ORM\ManyToOne(targetEntity="Project", inversedBy="files", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="files")
      * @ORM\JoinColumn(
      *      name="project_id",
      *      referencedColumnName="id",

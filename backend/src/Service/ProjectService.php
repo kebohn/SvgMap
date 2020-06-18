@@ -108,6 +108,30 @@ class ProjectService {
             }
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
+    public function getProject($id) {
+        $projectRepository = $this->em->getRepository(Project::class);
+        $project = $projectRepository->find($id);
+        /*
+        $files = $project->getFiles();
+        foreach($files as $file) {
+            $tmpFile = [
+            'id' => $project->getId(),
+            'generatedName' => $project->getGeneratedName(),
+            'name' => $project->getName()
+        ];
+        }*/
+        return [
+            'id' => $project->getId(),
+            'generatedName' => $project->getGeneratedName(),
+            'name' => $project->getName(),
+            'files' => $project->getFiles()
+            ];
+    }
+
     public function getAllProjects() {
         $projectRepository = $this->em->getRepository(Project::class);
         return $projectRepository->findAllProjectsDesc();

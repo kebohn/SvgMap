@@ -8,11 +8,10 @@
     <b-button type="is-primary" :disabled="!selected" icon-left="trash" @click="confirmDeleteProject">
       Delete
     </b-button>
-    <b-button type="is-primary" :disabled="!selected" icon-left="folder" >
+    <b-button type="is-primary" :disabled="!selected" icon-left="folder" @click="openProject">
       Open Project
     </b-button>
   </div>
-
     <b-tabs>
       <b-tab-item label="Table">
         <b-table
@@ -84,9 +83,13 @@
         let idx = this.projects.indexOf(this.selected);
         if (idx !== -1) {
           this.projects.splice(idx,1)
+          this.selected = null;
           return true;
         }
         return false;
+      },
+      openProject() {
+        this.$router.push({ name: 'Project', params: {id: this.selected.id }})
       }
     }
   }

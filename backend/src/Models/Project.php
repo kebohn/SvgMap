@@ -42,16 +42,16 @@ class Project {
 
     /**
      * @var File[]
-     * @ORM\OneToMany(targetEntity="File", mappedBy="project", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="File", mappedBy="project")
      */
     private $files;
 
     /**
      * @return File[]
      */
-    public function getFiles(): array
+    public function getFiles() : array
     {
-        return $this->files;
+        return $this->files->toArray();
     }
 
     public function __construct(string $name)

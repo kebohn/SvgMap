@@ -32,7 +32,13 @@ class ProjectController {
     }
 
     public function getProject(Request $request, Response $response, $args){
-        
+        $id = $args['projectId'];
+        $project = $this->projectService->getProject($id);
+        $payload = json_encode($project);
+        $response->getBody()->write($payload);
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus(200);
     }
 
     public function deleteProject(Request $request, Response $response, $args){
