@@ -54,6 +54,9 @@ class Project {
         return $this->files->toArray();
     }
 
+    /**
+     * @param string $name
+     */
     public function __construct(string $name)
     {
         $this->generatedName = uniqid();
@@ -61,21 +64,33 @@ class Project {
         $this->files = new ArrayCollection();
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @param $name
+     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return int
+     */
     public function getRelPath()
     {
         return $this->getId();

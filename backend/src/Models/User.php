@@ -23,17 +23,24 @@ class User {
      */
     private $name;
 
+    /**
+     * @return int
+     */
     public function getId() {
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
     public function getName() {
         return $this->name;
     }
 
+    /**
+     * @param $name
+     */
     public function setName($name) {
         $this->name = $name;
     }
-
-
 }

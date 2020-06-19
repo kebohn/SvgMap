@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+use App\Controllers\FileController;
 use App\Controllers\HomeController;
 use App\Controllers\ProjectController;
 use App\Models\User;
@@ -57,11 +58,8 @@ return function (App $app) {
         $group->get('/projects/{projectId}', ProjectController::class . ':getProject');
         $group->delete('/projects/{projectId}', ProjectController::class . ':deleteProject');
 
-        $group->get('/projects/{projectId}/file/{fileId}', FileController::class . ':getFile');
-        $group->post('/projects/{projectId}/files', FileController::class . ':createFile');
-        $group->get('/projects/{projectId}/file/{fileId}', FileController::class . ':deleteFile');
-    
-
-        
+        $group->get('/files/{fileId}', FileController::class . ':getFile');
+        $group->post('/files/{projectId}', FileController::class . ':createFile');
+        $group->delete('/files/{fileId}', FileController::class . ':deleteFile');
     });
 };

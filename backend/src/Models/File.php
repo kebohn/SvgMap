@@ -61,6 +61,9 @@ class File {
         $this->project = $project;
     }
 
+    /**
+     * @param $name
+     */
     public function __construct($name)
     {
         $this->generatedName = uniqid();
@@ -79,15 +82,24 @@ class File {
         return $this->generatedName;
     }
 
+    /**
+     * @param $name
+     */
     public function setName($name) {
         $this->name = $name;
     }
 
+    /**
+     * @return int
+     */
     public function getId() {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getRelPath() {
-        return $this->getGeneratedName().'/'. $this->getName();
+        return $this->project->getGeneratedName() .'/'. $this->getGeneratedName();
     }
 }

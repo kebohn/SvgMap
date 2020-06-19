@@ -25,7 +25,15 @@ class FileController {
 
     public function getFile(Request $request, Response $response, $args){
         $id = $args['fileId'];
-        $this->fileService->getFile($id);
-        return $response;
+        $file = $this->fileService->getFile($id);
+        readfile($file);
+        return $response
+            ->withHeader('Content-Description', 'File Transfer')
+            ->withHeader('Content-Type', 'application/octet-stream')
+            ->withHeader('Content-Disposition', 'attachment;filename="'.basename($file).'"')
+            ->withHeader('Expires', '0')
+            ->withHeader('Cache-Control', 'must-revalidate')
+            ->withHeader('Pragma', 'public')
+            ->withHeader('Content-Length', filesize($file));
     }
 }

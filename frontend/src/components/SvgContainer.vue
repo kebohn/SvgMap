@@ -1,14 +1,14 @@
 <template>
   <section>
-    <span v-html="content" />
+    <figure v-html="content"></figure>
   </section>
 </template>
 
 <script>
   export default {
     props: {
-      src: {
-        type: String,
+      fileId: {
+        type: Number,
         required: true,
       }
     },
@@ -18,11 +18,13 @@
       }
     },
     watch: {
-      src: {
+      fileId: {
         immediate: false,
-        handler(src) {
-          console.log(src)
-          //this.$http('').then((response) => this.content = response.data);
+        handler(fileId) {
+          this.$http(`/api/files/${fileId}`)
+                  .then((response) => {
+                      this.content = response.data;
+                  });
         }
       }
     }

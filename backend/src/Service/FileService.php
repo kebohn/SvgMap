@@ -23,6 +23,14 @@ class FileService {
         $this->configuration = $configuration;
     }
 
+    /**
+     * @param $id
+     * @return string
+     */
     public function getFile($id) {
+        $fileRepository = $this->em->getRepository(File::class);
+        $file = $fileRepository->find($id);
+        $path = $this->configuration->getString('uploads');
+        return $path .'/'. $file->getRelPath() .'.'. pathinfo($file->getName(), PATHINFO_EXTENSION);
     }
 }

@@ -9,7 +9,7 @@
               </div>
           </div>
       </section>
-      <svg-container :src='svgSource'></svg-container>
+      <svg-container :fileId=fileId></svg-container>
       <FileUploader></FileUploader>
   </div>
 </template>
@@ -26,8 +26,8 @@ export default {
     components: {SvgContainer, FileUploader},
     data() {
         return {
-            svgSource: '',
-            project: Object 
+            project: Object,
+            fileId: -1,
         }
     },
     created() {
@@ -41,8 +41,8 @@ export default {
             this.$http.get(`/api/projects/${this.id}`).then(response => {
                 this.project = response.data
                 for (let file of response.data.files) {
-                    if (file.path.split('.').pop().toLowerCase() === 'svg') {
-                        this.svgSource = file.path;
+                    if (file.name.split('.').pop().toLowerCase() === 'svg') {
+                        this.fileId = file.id;
                         break;
                     }
                 }
@@ -52,7 +52,6 @@ export default {
 
 }
 </script>
-
 
 <style>
 
