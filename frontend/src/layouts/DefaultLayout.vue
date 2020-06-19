@@ -4,7 +4,7 @@
       <template slot="brand">
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
           <img
-            src="`${publicPath}2020_RWF_iusmaps.online_Logo.svg`" alt=""
+            :src="publicPath + '2020_RWF_iusmaps.online_Logo.svg'" alt=""
           />
         </b-navbar-item>
       </template>

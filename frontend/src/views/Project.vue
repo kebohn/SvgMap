@@ -9,6 +9,7 @@
               </div>
           </div>
       </section>
+      <svg-container :src='svgSource'></svg-container>
       <FileUploader></FileUploader>
   </div>
 </template>
@@ -16,15 +17,17 @@
 <script>
 import DefaultLayout from '@/layouts/DefaultLayout';
 import FileUploader from "@/components/FileUploader";
+import SvgContainer from "@/components/SvgContainer";
 export default {
     name: 'Project',
     props: {
         id: null
     },
-    components: {FileUploader},
+    components: {SvgContainer, FileUploader},
     data() {
         return {
-            project: Object
+            svgSource: '',
+            project: Object 
         }
     },
     created() {
@@ -36,9 +39,13 @@ export default {
     methods: {
         fetchProject() {
             this.$http.get(`/api/projects/${this.id}`).then(response => {
-                console.log(response.data)
                 this.project = response.data
-                console.log(this.project);
+                for (let file of response.data.files) {
+                    if (file.path.split('.').pop().toLowerCase() === 'svg') {
+                        this.svgSource = file.path;
+                        break;
+                    }
+                }
             });
         }
     }

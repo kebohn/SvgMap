@@ -83,7 +83,11 @@ class File {
         $this->name = $name;
     }
 
+    public function getId() {
+        return $this->id;
+    }
+
     public function getRelPath() {
-        return $this->project->getId(). $this->getName();
+        return $this->getGeneratedName().'/'. $this->getName();
     }
 }

@@ -23,7 +23,6 @@ return function (App $app) {
         $users = $this->get('db')->getRepository(User::class)->findAll();
         var_dump($users);
         die();
-        return $response;
     });
 
     $app->get('/swagger', function (Request $request, Response $response) {
@@ -58,9 +57,9 @@ return function (App $app) {
         $group->get('/projects/{projectId}', ProjectController::class . ':getProject');
         $group->delete('/projects/{projectId}', ProjectController::class . ':deleteProject');
 
-
-        $group->post('/projects/{projectId}/files', ProjectController::class . ':createFile');
-        $group->get('/projects/{projectId}/file/{fileId}', ProjectController::class . ':deleteFile');
+        $group->get('/projects/{projectId}/file/{fileId}', FileController::class . ':getFile');
+        $group->post('/projects/{projectId}/files', FileController::class . ':createFile');
+        $group->get('/projects/{projectId}/file/{fileId}', FileController::class . ':deleteFile');
     
 
         

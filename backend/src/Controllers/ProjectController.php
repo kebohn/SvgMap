@@ -46,13 +46,4 @@ class ProjectController {
         $this->projectService->deleteProject($id);
         return $response->withStatus(200);
     }
-
-    public function createFile(Request $request, Response $response, $args){
-        
-    }
-
-    public function deleteFile(Request $request, Response $response, $args){
-        var_dump($args);
-        return $response;
-    }
 }

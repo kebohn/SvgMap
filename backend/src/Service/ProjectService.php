@@ -115,20 +115,22 @@ class ProjectService {
     public function getProject($id) {
         $projectRepository = $this->em->getRepository(Project::class);
         $project = $projectRepository->find($id);
-        /*
         $files = $project->getFiles();
+        $i = 0;
+        $tmpFile = [];
         foreach($files as $file) {
-            $tmpFile = [
-            'id' => $project->getId(),
-            'generatedName' => $project->getGeneratedName(),
-            'name' => $project->getName()
-        ];
-        }*/
+            $tmpFile[$i] = [
+            'path' => $file->getRelPath(),
+            'name' => $file->getName(),
+            'id' => $file->getId()
+            ];
+            $i++;
+        }
         return [
             'id' => $project->getId(),
             'generatedName' => $project->getGeneratedName(),
             'name' => $project->getName(),
-            'files' => $project->getFiles()
+            'files' => $tmpFile
             ];
     }
 

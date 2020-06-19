@@ -54,7 +54,7 @@
       },
       confirmDeleteProject() {
         this.$buefy.dialog.confirm({
-          title: 'Deleting account',
+          title: 'Deleting Project',
           message: `Are you sure you want to <b>delete Project ${this.selected.name}</b>? This action cannot be undone.`,
           confirmText: 'Delete Project',
           type: 'is-danger',
