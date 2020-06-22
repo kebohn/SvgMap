@@ -1,9 +1,9 @@
 <template>
   <div id="page-container">
-    <b-navbar>
+    <b-navbar class="is-fixed-top" shadow="shadow">
       <template slot="brand">
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
-          <img
+          <img width="100"
             :src="publicPath + '2020_RWF_iusmaps.online_Logo.svg'" alt=""
           />
         </b-navbar-item>
@@ -11,25 +11,17 @@
       <template slot="start">
         <b-navbar-item>
           <router-link to = "/">
-            Home
+            Project List
           </router-link>
         </b-navbar-item>
         <b-navbar-item>
           <router-link to = "/upload">
-            Upload
+            New Project
           </router-link>
         </b-navbar-item>
-        <b-navbar-dropdown label="Info">
-          <b-navbar-item href>
-            About
-          </b-navbar-item>
-          <b-navbar-item>
-            Contact
-          </b-navbar-item>
-        </b-navbar-dropdown>
       </template>
     </b-navbar>
-    <main class="section">
+    <main class="section m-t-xl">
       <slot />
     </main>
     <footer id="footer">
@@ -59,10 +51,4 @@ export default {
   height: 100vh;
 }
 
-#footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 2.5rem; /* Footer height */
-}
 </style>

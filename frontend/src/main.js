@@ -4,8 +4,8 @@ import VueRouter from 'vue-router'
 import router from '@/router.js'
 import axios from 'axios'
 import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
 import '@/assets/css/spacing.scss'
+import '@/assets/css/main.scss'
 import { library } from '@fortawesome/fontawesome-svg-core';
 // internal icons
 import { faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,

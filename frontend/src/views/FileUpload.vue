@@ -1,5 +1,16 @@
 <template>
-        <FileUploader ></FileUploader>
+    <div>
+        <section class="hero">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="title">
+                        New Project
+                    </h1>
+                </div>
+            </div>
+        </section>
+        <FileUploader></FileUploader>
+    </div>
 </template>
 
 <script>
