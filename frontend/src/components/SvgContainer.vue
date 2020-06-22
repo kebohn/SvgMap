@@ -1,6 +1,6 @@
 <template>
   <section>
-    <figure ref="svg" v-html="content"></figure>
+    <figure ref="svg" v-html="content" @click="getLink($event)"></figure>
   </section>
 </template>
 
@@ -28,9 +28,23 @@
                         let svg = this.$refs.svg.children[0];
                         svg.setAttribute("height", "100%");
                         svg.setAttribute("width", "100%");
+                        /*
+                        let list = Array.from(svg.getElementsByTagName("a"));
+
+                        for (const c of list) {
+                          console.log(c)
+                        }
+
+                         */
                       })
                   });
         }
+      }
+    },
+    methods: {
+      getLink(event) {
+        console.log(event.target.parentNode.parentNode);
+        event.preventDefault()
       }
     }
   }

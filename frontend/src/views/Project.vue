@@ -4,11 +4,12 @@
           <div class="hero-body">
               <div class="container">
                   <h1 class="title">
-                      Project
+                      Project {{this.project.name}}
                   </h1>
               </div>
           </div>
       </section>
+      <sidebar></sidebar>
       <svg-container :fileId=fileId></svg-container>
       <FileUploader></FileUploader>
   </div>
@@ -18,12 +19,13 @@
 import DefaultLayout from '@/layouts/DefaultLayout';
 import FileUploader from "@/components/FileUploader";
 import SvgContainer from "@/components/SvgContainer";
+import Sidebar from "@/components/Sidebar";
 export default {
     name: 'Project',
     props: {
         id: null
     },
-    components: {SvgContainer, FileUploader},
+    components: {SvgContainer, FileUploader, Sidebar},
     data() {
         return {
             project: Object,
@@ -47,7 +49,7 @@ export default {
                     }
                 }
             });
-        }
+        },
     }
 
 }

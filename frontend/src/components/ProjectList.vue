@@ -13,17 +13,13 @@
     </b-button>
   </div>
     <b-tabs>
-      <b-tab-item label="Table">
+      <b-tab-item >
         <b-table
                 :data="projects"
                 :columns="columns"
                 :selected.sync="selected"
                 focusable>
         </b-table>
-      </b-tab-item>
-
-      <b-tab-item label="Selected">
-        <pre>{{ selected }}</pre>
       </b-tab-item>
     </b-tabs>
   </section>
