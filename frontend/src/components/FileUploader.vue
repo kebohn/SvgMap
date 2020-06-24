@@ -2,9 +2,7 @@
   <section>
     <div class="field is-grouped m-t-md is-pulled-right">
       <div class="control">
-        <button
-                v-bind:disabled="uploaded.length === this.dropFiles - 1 && projectName !== '' ?
-                isDisabled = false : isDisabled = true"
+        <button :disabled=isDisabled
                 @click="submit()" class="button is-link">Submit</button>
       </div>
       <div class="control">
@@ -14,7 +12,7 @@
     <div class="is-clearfix"></div>
 
     <b-field label="ProjectName">
-      <b-input v-model="projectName"></b-input>
+      <b-input v-model="projectName" @input="checkSubmitCondition"></b-input>
     </b-field>
     <b-field>
       <div class="buttons">
@@ -29,7 +27,8 @@
     </b-field>
 
     <b-field v-if="showFileUpload">
-      <b-upload name="files" @input.once="checkFirstFile()" @input="addFileToLink()" v-model="dropFiles" multiple drag-drop expanded>
+      <b-upload name="files" @input.once="checkFirstFile()" @input="addFileToLink()"
+                v-model="dropFiles" multiple drag-drop expanded>
         <section class="section">
           <div class="content has-text-centered">
             <p>
@@ -94,11 +93,11 @@ export default {
       if (this.getFileExtension(this.dropFiles[index].name) === 'svg') {
         this.resetFileUploadForm();
       } else {
-        console.log(index)
         this.dropFiles.splice(index, 1);
         let idx = this.uploaded.indexOf(index);
         this.uploaded[idx] = -1;
       }
+      this.checkSubmitCondition();
     },
     checkFirstFile() {
         if (this.getFileExtension(this.dropFiles[0].name) === 'svg') {
@@ -117,11 +116,26 @@ export default {
     },
     addFileToLink() {
       for (let [indexEntry, item] of this.links.entries()) {
-        for (let [indexFile, file] of this.dropFiles.entries())
+        for (let [indexFile, file] of this.dropFiles.entries()) {
           if (file.name === this.getBaseName(item.getAttribute("xlink:href"))) {
             this.uploaded[indexEntry] = indexFile;
           }
+        }
       }
+      this.checkSubmitCondition();
+    },
+    checkSubmitCondition() {
+      if (this.projectName === '' || this.file === null) {
+        this.isDisabled = true;
+        return;
+      }
+      for (let item of this.uploaded) {
+        if (item === -1) {
+          this.isDisabled = true;
+          return;
+        }
+      }
+      this.isDisabled = false;
     },
     updateLinkList(list) {
       for (let item of list) {
