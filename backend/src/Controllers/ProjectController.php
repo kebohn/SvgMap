@@ -26,9 +26,12 @@ class ProjectController {
     public function createProject(Request $request, Response $response, $args){
         $name = $request->getHeader('x-project-title')[0];
         $files = $request->getUploadedFiles();
-        $this->projectService->createProject($name, $files);
-        return $response->withStatus(200);
-        
+        $data['projectId'] = $this->projectService->createProject($name, $files);
+        $payload = json_encode($data);
+        $response->getBody()->write($payload);
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus(200);
     }
 
     public function getProject(Request $request, Response $response, $args){

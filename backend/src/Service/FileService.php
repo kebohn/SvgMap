@@ -33,4 +33,17 @@ class FileService {
         $path = $this->configuration->getString('uploads');
         return $path .'/'. $file->getRelPath() .'.'. pathinfo($file->getName(), PATHINFO_EXTENSION);
     }
+
+    public function replaceFile($id, $fileContent) {
+        $fileRepository = $this->em->getRepository(File::class);
+        $file = $fileRepository->find($id);
+        $fileName = $this->configuration->getString('uploads') . '/' . $file->getRelPath() . '.'. pathinfo($file->getName(), PATHINFO_EXTENSION);
+        if (file_exists($fileName) && ($f = fopen($fileName,'w'))) {
+            fwrite($f,$fileContent);
+            fclose($f);
+            return 200;
+        } else {
+            return 500;
+        }
+    }
 }

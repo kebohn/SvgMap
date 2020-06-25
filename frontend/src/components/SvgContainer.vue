@@ -54,7 +54,7 @@
       },
       getLink(event) {
         console.log(event.target);
-        event.preventDefault()
+        //event.preventDefault()
       }
     }
   }

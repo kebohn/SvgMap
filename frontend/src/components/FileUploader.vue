@@ -19,7 +19,7 @@
           <b-button size="is-small"
                  v-for="(link, index) in links"
                  :key="index"
-                  v-bind:class="uploaded[index] !== -1 ? 'is-success' : 'is-danger'"
+                  v-bind:class="uploaded[index] === true ? 'is-success' : 'is-danger'"
                   @click="activateBtn(index)">
             {{link.getAttribute("xlink:title")}}
           </b-button>
@@ -27,7 +27,7 @@
     </b-field>
 
     <b-field v-if="showFileUpload">
-      <b-upload name="files" @input.once="checkFirstFile()" @input="addFileToLink()"
+      <b-upload name="files" @input.once="checkFirstFile()" @input="checkLinksCondition()"
                 v-model="dropFiles" multiple drag-drop expanded>
         <section class="section">
           <div class="content has-text-centered">
@@ -44,6 +44,7 @@
       <span
         v-for="(file, index) in dropFiles"
         :key="index"
+        :id="file.name"
         class="tag is-info"
       >
         {{ file.name }}
@@ -54,7 +55,7 @@
         ></button>
       </span>
     </div>
-    <svg-container :file=file v-on:updateLinkList="updateLinkList"></svg-container>
+    <svg-container ref="svgContainer" :file=file v-on:updateLinkList="updateLinkList"></svg-container>
   </section>
 </template>
 
@@ -83,21 +84,36 @@ export default {
           formData.append('files[' + i + ']', file);
         }
         this.$http.post('/api/projects', formData, {
-          headers: {
-            'x-project-title' : this.projectName
-          }
-        }
-        ).then(response => console.log(response));
+          headers: {'x-project-title' : this.projectName }
+        }).then(response => {
+            let projectId = response.data['projectId'];
+            this.$http.get(`/api/projects/${projectId}`).then(response => {
+              for (let file of response.data["files"]) {
+                for (let link of this.links) {
+                  if (file.name === this.getBaseName(link.getAttribute("xlink:href"))) {
+                    link.setAttribute("data-id", file.id)
+                  }
+                }
+              }
+              let svg = this.$refs.svgContainer.$refs.svg.children[0].outerHTML;
+              this.$http.post(`/api/files/replace/${response.data["files"][0].id}`, {svg: svg}).then(()=> {
+                  this.$buefy.toast.open(`Project created successfully`);
+                  this.$router.push({ name: 'Project', params: {id: projectId }})
+              })
+                      .catch(error => {
+                        this.$buefy.toast.open(`An error occurred, please try again!\n ${error}`);
+              });
+            });
+        });
     },
     deleteDropFile(index) {
       if (this.getFileExtension(this.dropFiles[index].name) === 'svg') {
         this.resetFileUploadForm();
+        this.isDisabled = true;
       } else {
         this.dropFiles.splice(index, 1);
-        let idx = this.uploaded.indexOf(index);
-        this.uploaded[idx] = -1;
+        this.checkLinksCondition()
       }
-      this.checkSubmitCondition();
     },
     checkFirstFile() {
         if (this.getFileExtension(this.dropFiles[0].name) === 'svg') {
@@ -111,14 +127,14 @@ export default {
             type: 'is-danger'
           });
           this.resetFileUploadForm();
-
       }
     },
-    addFileToLink() {
+    checkLinksCondition() {
+      this.uploaded = new Array(this.links.length).fill(false);
       for (let [indexEntry, item] of this.links.entries()) {
-        for (let [indexFile, file] of this.dropFiles.entries()) {
+        for (let file of this.dropFiles) {
           if (file.name === this.getBaseName(item.getAttribute("xlink:href"))) {
-            this.uploaded[indexEntry] = indexFile;
+              this.uploaded[indexEntry] = true;
           }
         }
       }
@@ -130,7 +146,7 @@ export default {
         return;
       }
       for (let item of this.uploaded) {
-        if (item === -1) {
+        if (item === false) {
           this.isDisabled = true;
           return;
         }
@@ -143,7 +159,7 @@ export default {
           this.links.push(item);
         }
       }
-      this.uploaded = new Array(this.links.length).fill(-1);
+      this.uploaded = new Array(this.links.length).fill(false);
     },
     activateBtn(e) {
       this.clicked = e;

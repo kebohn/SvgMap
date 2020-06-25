@@ -36,4 +36,11 @@ class FileController {
             ->withHeader('Pragma', 'public')
             ->withHeader('Content-Length', filesize($file));
     }
+    public function replaceFile(Request $request, Response $response, $args) {
+        $id = $args['fileId'];
+        $fileContent = json_decode($request->getBody())->svg;
+        return $response->withStatus(
+            $this->fileService->replaceFile($id, $fileContent)
+        );
+    }
 }

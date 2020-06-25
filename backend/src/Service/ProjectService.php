@@ -28,11 +28,12 @@ class ProjectService {
     }
 
     /**
-     * @param $name string
-     * @param $files UploadedFileInterface[][]
+     * @param $name
+     * @param $files
+     * @return int
      * @throws \Exception
      */
-    public function createProject($name, $files) {
+    public function createProject($name, $files) : int{
 
         $uploadDir = $this->configuration->getString('uploads');
         $project = new Project($name);
@@ -48,13 +49,12 @@ class ProjectService {
                         $pi = pathinfo($uploadedFile->getClientFilename());
                         $ext = $pi['extension'];
                         $uploadedFile->moveTo($uploadDir.'/'.$project->getGeneratedName().'/'.$file->getGeneratedName().'.'.$ext);
-
                         $file->setProject($project);
                         $this->em->persist($file);
                     }
-
                     $this->em->flush();
                     $this->em->commit();
+                    return $project->getId();
 
                 } catch (\Exception $e) {
                     $this->em->rollback();
@@ -93,7 +93,7 @@ class ProjectService {
      * @param $str
      * @return bool
      */
-    public function deleteDirectory($str) {
+    public function deleteDirectory($str) :bool {
             if (is_file($str)) {
                 return unlink($str);
             }
@@ -112,7 +112,7 @@ class ProjectService {
      * @param $id
      * @return array
      */
-    public function getProject($id) {
+    public function getProject($id) :array {
         $projectRepository = $this->em->getRepository(Project::class);
         $project = $projectRepository->find($id);
         $files = $project->getFiles();

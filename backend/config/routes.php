@@ -59,6 +59,7 @@ return function (App $app) {
         $group->delete('/projects/{projectId}', ProjectController::class . ':deleteProject');
 
         $group->get('/files/{fileId}', FileController::class . ':getFile');
+        $group->post('/files/replace/{fileId}', FileController::class . ':replaceFile');
         $group->post('/files/{projectId}', FileController::class . ':createFile');
         $group->delete('/files/{fileId}', FileController::class . ':deleteFile');
     });
