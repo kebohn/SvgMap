@@ -22,14 +22,12 @@
     watch: {
       fileId: {
         immediate: false,
-        handler(fileId) {
-          this.$http(`/api/files/${fileId}`)
-              .then((response) => {
-                  this.content = response.data;
-                  this.$nextTick(() => {
-                    this.adjustSvgSize();
-                  });
-              });
+        async handler(fileId) {
+          let promise = await this.fetchFile(fileId);
+          this.content = promise.data;
+          this.$nextTick(() => {
+            this.adjustSvgSize();
+          });
         }
       },
       file: {
@@ -44,6 +42,9 @@
     },
 
     methods: {
+      async fetchFile(fileId) {
+        return this.$http(`/api/files/${fileId}`)
+      },
       adjustSvgSize() {
         let svg = this.$refs.svg.children[0];
         if (svg != null) {
@@ -52,9 +53,19 @@
           this.$emit('updateLinkList', Array.from(svg.getElementsByTagName("a")));
         }
       },
-      getLink(event) {
-        console.log(event.target);
-        //event.preventDefault()
+      async getLink(event) {
+        event.preventDefault();
+        let node = event.target.parentNode;
+        if (node.tagName != null) {
+          while(node.tagName !== 'a' && node.tagName !== 'svg') {
+            node = node.parentNode;
+          }
+          let id = node.getAttribute("data-id");
+          if (node.tagName === 'a' && id != null) {
+            let promise = await this.fetchFile(id);
+            this.$emit('openPdf', promise.data);
+          }
+        }
       }
     }
   }

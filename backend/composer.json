@@ -8,7 +8,8 @@
         "slim/psr7": "^1.1",
         "slim/slim": "4.*",
         "symfony/serializer": "^5.0",
-        "zircote/swagger-php": "^3.0"
+        "zircote/swagger-php": "^3.0",
+      "ext-fileinfo": "*"
     },
     "autoload": {
         "psr-4": {
