@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Service\FileService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Psr7\Stream;
 
 
 class FileController {
@@ -30,7 +31,7 @@ class FileController {
         return $response
             ->withHeader('Content-Description', 'File Transfer')
             ->withHeader('Content-Type', 'application/octet-stream')
-            ->withHeader('Content-Disposition', 'attachment;filename="'.basename($file).'"')
+            ->withHeader('Content-Disposition', 'attachment; filename="'.basename($file).'"')
             ->withHeader('Expires', '0')
             ->withHeader('Cache-Control', 'must-revalidate')
             ->withHeader('Pragma', 'public')

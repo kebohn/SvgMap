@@ -29,7 +29,11 @@ class FileService {
      */
     public function getFile($id) {
         $fileRepository = $this->em->getRepository(File::class);
-        $file = $fileRepository->find($id);
+        if (is_numeric($id)) {
+            $file = $fileRepository->find($id);
+        } else {
+            
+        }
         $path = $this->configuration->getString('uploads');
         return $path .'/'. $file->getRelPath() .'.'. pathinfo($file->getName(), PATHINFO_EXTENSION);
     }

@@ -86,24 +86,11 @@ export default {
         this.$http.post('/api/projects', formData, {
           headers: {'x-project-title' : this.projectName }
         }).then(response => {
-            let projectId = response.data['projectId'];
-            this.$http.get(`/api/projects/${projectId}`).then(response => {
-              for (let file of response.data["files"]) {
-                for (let link of this.links) {
-                  if (file.name === this.getBaseName(link.getAttribute("xlink:href"))) {
-                    link.setAttribute("data-id", file.id)
-                  }
-                }
-              }
-              let svg = this.$refs.svgContainer.$refs.svg.children[0].outerHTML;
-              this.$http.post(`/api/files/replace/${response.data["files"][0].id}`, {svg: svg}).then(()=> {
-                  this.$buefy.toast.open(`Project created successfully`);
-                  this.$router.push({ name: 'Project', params: {id: projectId }})
-              })
-                      .catch(error => {
-                        this.$buefy.toast.open(`An error occurred, please try again!\n ${error}`);
-              });
-            });
+                  this.$buefy.toast.open(`Project created successfully`)
+                  this.$router.push({ name: 'Project', params: {id: response.data['projectId'] }})
+
+        }).catch(error => {
+                  this.$buefy.toast.open(`An error occurred, please try again!\n ${error}`);
         });
     },
     deleteDropFile(index) {

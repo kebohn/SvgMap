@@ -11,14 +11,12 @@
       </section>
       <sidebar></sidebar>
       <svg-container :fileId=fileId v-on:openPdf="openPdf"></svg-container>
-      <pdf-viewer v-bind:src="src" v-if="showPdfComponent"></pdf-viewer>
+      <pdf-viewer v-bind:src="src" :path="`${publicPath}lib`" v-if="showPdfComponent"></pdf-viewer>
       <FileUploader></FileUploader>
   </div>
 </template>
 
 <script>
-
-    import * as jsPDF from 'jspdf'
 
 import DefaultLayout from '@/layouts/DefaultLayout';
 import FileUploader from "@/components/FileUploader";
@@ -36,7 +34,8 @@ export default {
             project: Object,
             fileId: -1,
             src: String,
-            showPdfComponent: false
+            showPdfComponent: false,
+            publicPath: process.env.BASE_URL
         }
     },
     created() {
@@ -57,13 +56,10 @@ export default {
                 }
             });
         },
-        openPdf(url) {
+        async openPdf(filename) {
+            console.log(filename);
             this.showPdfComponent = true;
-            this.src = url;
-            //console.log(this.src)
-            //var doc = new jsPDF() // just for test cases
-            //doc.text(this.src, 10, 10)
-            //doc.save('test.pdf')
+            this.src = "";
         }
     }
 

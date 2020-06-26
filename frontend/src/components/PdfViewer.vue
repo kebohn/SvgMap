@@ -1,25 +1,30 @@
 <template>
-  <section>
-    <pdf :src="src"></pdf>
-  </section>
+  <div ref='viewer'></div>
 </template>
 
 <script>
-  import pdf from 'vue-pdf'
   export default {
-    components: {
-      pdf: pdf
-    },
+    name: 'WebViewer',
     props: {
-      src: {
-        type: String
-      }
+      path: String,
+      src: String
     },
-    data() {
-      return {
-      }
-    },
-    methods: {
+    mounted: function () {
+      console.log(this.url)
+      WebViewer({
+        path: this.path,
+        initialDoc: this.src, // replace with your own PDF file
+      }, this.$refs.viewer).then((instance) => {
+
+      });
     }
   }
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+  div {
+    width: 100%;
+    height: 100vh;
+  }
+</style>

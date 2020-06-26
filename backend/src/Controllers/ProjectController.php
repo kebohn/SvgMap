@@ -49,4 +49,9 @@ class ProjectController {
         $this->projectService->deleteProject($id);
         return $response->withStatus(200);
     }
+
+    public function getFile(Rquest $request, Response $response, $args) {
+        $projectId = $args['projectId'];
+        $fileName = $args['fileName'];
+    }
 }

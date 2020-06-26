@@ -60,10 +60,8 @@
           while(node.tagName !== 'a' && node.tagName !== 'svg') {
             node = node.parentNode;
           }
-          let id = node.getAttribute("data-id");
-          if (node.tagName === 'a' && id != null) {
-            let promise = await this.fetchFile(id);
-            this.$emit('openPdf', promise.data);
+          if (node.tagName === 'a') {
+            this.$emit('openPdf', node.getAttribute('xlink:href'));
           }
         }
       }
