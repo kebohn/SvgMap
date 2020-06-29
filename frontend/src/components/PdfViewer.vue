@@ -1,30 +1,30 @@
 <template>
-  <div ref='viewer'></div>
+  <section>
+    <pdf :src="src"
+         @num-pages="pageCount = $event"
+         @page-loaded="currentPage = $event">
+    </pdf>
+  </section>
 </template>
 
 <script>
+  import pdf from 'vue-pdf'
   export default {
-    name: 'WebViewer',
-    props: {
-      path: String,
-      src: String
+    components: {
+      pdf: pdf
     },
-    mounted: function () {
-      console.log(this.url)
-      WebViewer({
-        path: this.path,
-        initialDoc: this.src, // replace with your own PDF file
-      }, this.$refs.viewer).then((instance) => {
-
-      });
+    props: {
+      src: {
+        type: Uint8Array
+      }
+    },
+    data() {
+      return {
+        currentPage: 0,
+        pageCount: 0,
+      }
+    },
+    methods: {
     }
   }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  div {
-    width: 100%;
-    height: 100vh;
-  }
-</style>

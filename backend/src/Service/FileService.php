@@ -24,30 +24,20 @@ class FileService {
     }
 
     /**
-     * @param $id
+     * @param $projectId
+     * @param $fileId
+     * @param $fileName
      * @return string
      */
-    public function getFile($id) {
+    public function getFile($projectId, $fileId, $fileName) :string {
         $fileRepository = $this->em->getRepository(File::class);
-        if (is_numeric($id)) {
-            $file = $fileRepository->find($id);
+        if ($fileId != null) {
+            $file = $fileRepository->find($fileId);
         } else {
-            
+            $fileName = preg_replace('/^.+[\\\\\\/]/', '', $fileName);
+            $file = $fileRepository->findOneBy(['project' => $projectId, 'name' => utf8_encode($fileName)]);
         }
         $path = $this->configuration->getString('uploads');
         return $path .'/'. $file->getRelPath() .'.'. pathinfo($file->getName(), PATHINFO_EXTENSION);
-    }
-
-    public function replaceFile($id, $fileContent) {
-        $fileRepository = $this->em->getRepository(File::class);
-        $file = $fileRepository->find($id);
-        $fileName = $this->configuration->getString('uploads') . '/' . $file->getRelPath() . '.'. pathinfo($file->getName(), PATHINFO_EXTENSION);
-        if (file_exists($fileName) && ($f = fopen($fileName,'w'))) {
-            fwrite($f,$fileContent);
-            fclose($f);
-            return 200;
-        } else {
-            return 500;
-        }
     }
 }

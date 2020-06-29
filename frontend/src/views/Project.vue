@@ -11,7 +11,7 @@
       </section>
       <sidebar></sidebar>
       <svg-container :fileId=fileId v-on:openPdf="openPdf"></svg-container>
-      <pdf-viewer v-bind:src="src" :path="`${publicPath}lib`" v-if="showPdfComponent"></pdf-viewer>
+      <pdf-viewer v-bind:src="src" v-if="showPdfComponent"></pdf-viewer>
       <FileUploader></FileUploader>
   </div>
 </template>
@@ -33,9 +33,8 @@ export default {
         return {
             project: Object,
             fileId: -1,
-            src: String,
+            src: null,
             showPdfComponent: false,
-            publicPath: process.env.BASE_URL
         }
     },
     created() {
@@ -56,13 +55,11 @@ export default {
                 }
             });
         },
-        async openPdf(filename) {
-            console.log(filename);
+        async openPdf(blob) {
             this.showPdfComponent = true;
-            this.src = "";
+            this.src = new Uint8Array(await blob.arrayBuffer());
         }
     }
-
 }
 </script>
 

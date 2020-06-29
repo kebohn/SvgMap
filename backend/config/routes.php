@@ -57,10 +57,9 @@ return function (App $app) {
         $group->post('/projects', ProjectController::class . ':createProject');
         $group->get('/projects/{projectId}', ProjectController::class . ':getProject');
         $group->delete('/projects/{projectId}', ProjectController::class . ':deleteProject');
-        $group->get('/projects/{projectId}/file/{fileName}', ProjectController::class . ':getFile');
 
         $group->get('/files/{fileId}', FileController::class . ':getFile');
-        $group->post('/files/replace/{fileId}', FileController::class . ':replaceFile');
+        $group->get('/files/{projectId}/file', FileController::class . ':getFile');
         $group->post('/files/{projectId}', FileController::class . ':createFile');
         $group->delete('/files/{fileId}', FileController::class . ':deleteFile');
     });

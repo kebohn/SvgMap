@@ -23,7 +23,7 @@
       fileId: {
         immediate: false,
         async handler(fileId) {
-          let promise = await this.fetchFile(fileId);
+          let promise = await this.fetchFileById(fileId);
           this.content = promise.data;
           this.$nextTick(() => {
             this.adjustSvgSize();
@@ -42,8 +42,14 @@
     },
 
     methods: {
-      async fetchFile(fileId) {
-        return this.$http(`/api/files/${fileId}`)
+      async fetchFileById(fileId) {
+        return this.$http.get(`/api/files/${fileId}`);
+      },
+      async fetchFileByName(fileName) {
+        let projectId = this.$route.params.id;
+        return this.$http.get(`/api/files/${projectId}/file`,
+                {headers: {fileName},
+                  responseType: 'blob',});
       },
       adjustSvgSize() {
         let svg = this.$refs.svg.children[0];
@@ -61,7 +67,8 @@
             node = node.parentNode;
           }
           if (node.tagName === 'a') {
-            this.$emit('openPdf', node.getAttribute('xlink:href'));
+            let promise = await this.fetchFileByName(node.getAttribute('xlink:href'))
+            this.$emit('openPdf', promise.data);
           }
         }
       }

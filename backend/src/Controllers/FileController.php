@@ -25,23 +25,21 @@ class FileController {
     }
 
     public function getFile(Request $request, Response $response, $args){
-        $id = $args['fileId'];
-        $file = $this->fileService->getFile($id);
-        readfile($file);
-        return $response
+        $projectId = $args['projectId'];
+        $fileId = $args['fileId'];
+        $fileName = $request->getHeader('fileName')[0];
+        $file = $this->fileService->getFile($projectId, $fileId, $fileName);
+        $openFile = fopen($file, 'rb');
+        $stream = new Stream($openFile);
+        return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/'.pathinfo($file, PATHINFO_EXTENSION))
             ->withHeader('Content-Description', 'File Transfer')
-            ->withHeader('Content-Type', 'application/octet-stream')
-            ->withHeader('Content-Disposition', 'attachment; filename="'.basename($file).'"')
+            ->withHeader('Content-Transfer-Encoding', 'binary')
+            ->withHeader('Content-Disposition', 'attachment; filename="' . basename($file) . '"')
             ->withHeader('Expires', '0')
+            ->withHeader('Content-Length', filesize($file))
             ->withHeader('Cache-Control', 'must-revalidate')
             ->withHeader('Pragma', 'public')
-            ->withHeader('Content-Length', filesize($file));
-    }
-    public function replaceFile(Request $request, Response $response, $args) {
-        $id = $args['fileId'];
-        $fileContent = json_decode($request->getBody())->svg;
-        return $response->withStatus(
-            $this->fileService->replaceFile($id, $fileContent)
-        );
+            ->withBody($stream);
     }
 }
