@@ -1,34 +1,35 @@
 <template>
-  <div>
-      <section class="hero">
-          <div class="hero-body">
-              <div class="container">
-                  <h1 class="title">
-                      Project {{this.project.name}}
-                  </h1>
-              </div>
-          </div>
-      </section>
-      <sidebar></sidebar>
-      <svg-container :fileId=fileId v-on:openPdf="openPdf"></svg-container>
-      <pdf-viewer v-bind:file="file" v-if="showPdfComponent" ref="pdfViewer"></pdf-viewer>
-      <FileUploader></FileUploader>
-  </div>
+    <multipane class="vertical-panes "layout="vertical">
+        <div class="pane" :style="{ minWidth: '30%', flexGrow: 1 }" @mousedown.stop>
+            <section class="hero">
+                <div class="hero-body">
+                    <div class="container">
+                        <h1 class="title">
+                            Project {{this.project.name}}
+                        </h1>
+                    </div>
+                </div>
+            </section>
+            <svg-container :fileId=fileId v-on:openPdf="openPdf"></svg-container>
+        </div>
+        <multipane-resizer></multipane-resizer>
+        <div class="pane">
+            <pdf-viewer v-bind:file="file" v-if="showPdfComponent" ref="pdfViewer"></pdf-viewer>
+        </div>
+    </multipane>
 </template>
 
 <script>
-
+import { Multipane, MultipaneResizer } from 'vue-multipane'
 import DefaultLayout from '@/layouts/DefaultLayout';
-import FileUploader from "@/components/FileUploader";
 import SvgContainer from "@/components/SvgContainer";
-import Sidebar from "@/components/Sidebar";
 import PdfViewer from "@/components/PdfViewer";
 export default {
     name: 'Project',
     props: {
         id: null
     },
-    components: {SvgContainer, FileUploader, Sidebar, PdfViewer},
+    components: {SvgContainer, PdfViewer, Multipane, MultipaneResizer },
     data() {
         return {
             project: Object,
@@ -67,6 +68,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+    .vertical-panes {
+    }
+    .vertical-panes > .pane {
+        text-align: left;
 
+        overflow: hidden;
+
+    }
+    .vertical-panes > .pane ~ .pane {
+        border-left: 1px solid #ccc;
+    }
 </style>
