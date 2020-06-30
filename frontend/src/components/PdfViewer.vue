@@ -1,19 +1,21 @@
 <template>
   <section>
-      <b-notification class="wrapper" :closable="false">
+      <b-notification :closable="false">
           <b-loading :is-full-page="false" :active.sync="isLoading">
             <b-icon
                     icon="sync-alt" size="is-large" custom-class="fa-spin">
             </b-icon>
           </b-loading>
-        <pdf v-for="i in numPages"
-             :key="i"
-             :src="src"
-             :page="i"
-             style="display: inline-block; width: 100%"
-             @num-pages="pageCount = $event"
-             @page-loaded="loading($event)">
-        </pdf>
+          <div class="wrapper">
+            <pdf v-for="i in numPages"
+                 :key="i"
+                 :src="src"
+                 :page="i"
+                 style="display: inline-block; width: 100%"
+                 @num-pages="pageCount = $event"
+                 @page-loaded="loading($event)">
+            </pdf>
+          </div>
       </b-notification>
   </section>
 </template>
@@ -39,8 +41,6 @@
         numPages: undefined,
       }
     },
-    mounted() {
-    },
     methods: {
       init() {
         this.$nextTick(() => {
@@ -62,5 +62,4 @@
     overflow-x:hidden;
     overflow-y:auto
   }
-
-  </style>
+</style>
