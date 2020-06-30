@@ -48,9 +48,9 @@
       async fetchFileByName(fileName) {
         let projectId = this.$route.params.id;
         return this.$http.get(`/api/files/${projectId}/file`,
-                {headers: {fileName},
-                  responseType: 'blob',});
-      },
+                {headers: {fileName}, responseType: 'blob',}).catch(() => {
+                  return null;
+      })},
       adjustSvgSize() {
         let svg = this.$refs.svg.children[0];
         if (svg != null) {
@@ -62,13 +62,15 @@
       async getLink(event) {
         event.preventDefault();
         let node = event.target.parentNode;
-        if (node.tagName != null) {
+        if (node.tagName !== 'FIGURE') {
           while(node.tagName !== 'a' && node.tagName !== 'svg') {
             node = node.parentNode;
           }
           if (node.tagName === 'a') {
             let promise = await this.fetchFileByName(node.getAttribute('xlink:href'))
-            this.$emit('openPdf', promise.data);
+            if (promise !== null) {
+              this.$emit('openPdf', promise.data);
+            }
           }
         }
       }
