@@ -1,23 +1,20 @@
 <template>
-  <section>
-      <b-notification :closable="false">
-          <b-loading :is-full-page="false" :active.sync="isLoading">
-            <b-icon
-                    icon="sync-alt" size="is-large" custom-class="fa-spin">
-            </b-icon>
-          </b-loading>
-          <div class="wrapper">
-            <pdf v-for="i in numPages"
-                 :key="i"
-                 :src="src"
-                 :page="i"
-                 style="display: inline-block; width: 100%"
-                 @num-pages="pageCount = $event"
-                 @page-loaded="loading($event)">
-            </pdf>
-          </div>
-      </b-notification>
-  </section>
+  <b-notification :closable="false">
+      <b-loading :is-full-page="false" :active.sync="isLoading">
+        <b-icon icon="sync-alt" size="is-large" custom-class="fa-spin">
+        </b-icon>
+      </b-loading>
+      <div class="wrapper">
+        <pdf v-for="i in numPages"
+             :key="i"
+             :src="src"
+             :page="i"
+             style="width: 100%"
+             @num-pages="pageCount = $event"
+             @page-loaded="loading($event)">
+        </pdf>
+      </div>
+  </b-notification>
 </template>
 
 <script>
@@ -60,6 +57,6 @@
   .wrapper {
     height: 500px;
     overflow-x:hidden;
-    overflow-y:auto
+    overflow-y:auto;
   }
 </style>

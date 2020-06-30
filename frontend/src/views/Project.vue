@@ -1,6 +1,6 @@
 <template>
-    <multipane class="vertical-panes "layout="vertical">
-        <div class="pane" :style="{ minWidth: '30%', flexGrow: 1 }" @mousedown.stop>
+    <multipane class="vertical-panes" layout="vertical">
+        <div class="pane" :style="{ minWidth: '30%', width:'100%'}" @mousedown.stop>
             <section class="hero">
                 <div class="hero-body">
                     <div class="container">
@@ -13,8 +13,8 @@
             <svg-container :fileId=fileId v-on:openPdf="openPdf"></svg-container>
         </div>
         <multipane-resizer></multipane-resizer>
-        <div class="pane">
-            <pdf-viewer v-bind:file="file" v-if="showPdfComponent" ref="pdfViewer"></pdf-viewer>
+        <div class="pane" :style="{ minWidth: '30%', flexGrow: 1}" v-if="showPdfComponent">
+            <pdf-viewer v-bind:file="file" ref="pdfViewer"></pdf-viewer>
         </div>
     </multipane>
 </template>
@@ -70,12 +70,12 @@ export default {
 
 <style scoped>
     .vertical-panes {
+        width: 100%;
+        height: 1000px;
     }
     .vertical-panes > .pane {
         text-align: left;
-
         overflow: hidden;
-
     }
     .vertical-panes > .pane ~ .pane {
         border-left: 1px solid #ccc;
