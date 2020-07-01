@@ -13,7 +13,7 @@
             <svg-container :fileId=fileId v-on:openPdf="openPdf"></svg-container>
         </div>
         <multipane-resizer></multipane-resizer>
-        <div class="pane" :style="{ minWidth: '30%', flexGrow: 1}" v-if="showPdfComponent">
+        <div class="pane" :style="{ minWidth: '50%', flexGrow: 1}" v-if="showPdfComponent">
             <pdf-viewer v-bind:file="file" ref="pdfViewer"></pdf-viewer>
         </div>
     </multipane>
@@ -69,12 +69,14 @@ export default {
 </script>
 
 <style scoped>
-    .vertical-panes {
-        width: 100%;
-        height: 1000px;
+    .layout-v > .multipane-resizer {
+        height: unset;
+    }
+    .multipane > div {
+        position: unset;
+        z-index: unset;
     }
     .vertical-panes > .pane {
-        text-align: left;
         overflow: hidden;
     }
     .vertical-panes > .pane ~ .pane {

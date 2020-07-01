@@ -1,62 +1,73 @@
 <template>
-  <b-notification :closable="false">
-      <b-loading :is-full-page="false" :active.sync="isLoading">
-        <b-icon icon="sync-alt" size="is-large" custom-class="fa-spin">
-        </b-icon>
-      </b-loading>
-      <div class="wrapper">
-        <pdf v-for="i in numPages"
-             :key="i"
-             :src="src"
-             :page="i"
-             style="width: 100%"
-             @num-pages="pageCount = $event"
-             @page-loaded="loading($event)">
+    <b-notification :closable="false">
+        <b-loading :is-full-page="false" :active.sync="isLoading">
+            <b-icon icon="sync-alt" size="is-large" custom-class="fa-spin">
+            </b-icon>
+        </b-loading>
+        <b-pagination v-if="!isLoading"
+                :total="numPages"
+                :current.sync="current"
+                range-before="1"
+                range-after="1"
+                order="is-centered"
+                perPage= "1"
+                icon-prev="chevron-left"
+                icon-next="chevron-right"
+                @change="page = $event">
+        </b-pagination>
+        <pdf :src="src"
+             :page="page"
+             @loaded="isLoading = false">
         </pdf>
-      </div>
-  </b-notification>
+    </b-notification>
 </template>
 
 <script>
-  import pdf from 'vue-pdf'
-  export default {
-    components: {
-      pdf: pdf
-    },
-    props: {
-      file: {
-        type: Uint8Array
-      }
-    },
-    data() {
-      return {
-        progress: 0,
-        isLoading: true,
-        currentPage: 0,
-        pageCount: 0,
-        src: undefined,
-        numPages: undefined,
-      }
-    },
-    methods: {
-      init() {
-        this.$nextTick(() => {
-          this.src = pdf.createLoadingTask(this.file);
-          this.src.promise.then(pdf => {
-            this.numPages = pdf.numPages;
-          });
-      });
-      },
-      loading(loadedPages) {
-        this.isLoading = Math.round(loadedPages / this.pageCount * 100) !== 100;
-      }
+    import pdf from 'vue-pdf'
+    import range from 'lodash.range';
+
+    export default {
+        components: {
+            pdf: pdf
+        },
+        props: {
+            file: {
+                type: Uint8Array
+            }
+        },
+        data() {
+            return {
+                isLoading: true,
+                src: undefined,
+                pageCount: undefined,
+                numPages: undefined,
+                pdf: undefined,
+                pages: [],
+                page: undefined,
+                current: 1,
+            }
+        },
+        watch: {
+            pdf(pdf) {
+                this.pages = [];
+                const promises = range(1, pdf.numPages).map(number => pdf.getPage(number));
+                Promise.all(promises).then(pages => {
+                    this.pages = pages;
+                });
+            },
+        },
+        methods: {
+            init() {
+                this.$nextTick(() => {
+                    this.src = pdf.createLoadingTask(this.file);
+                    this.src.promise.then(pdf => {
+                        this.pdf = pdf;
+                        this.numPages = pdf.numPages;
+                    });
+                });
+            },
+        }
     }
-  }
 </script>
 <style scoped>
-  .wrapper {
-    height: 500px;
-    overflow-x:hidden;
-    overflow-y:auto;
-  }
 </style>
