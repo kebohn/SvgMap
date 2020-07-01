@@ -26,6 +26,8 @@ Vue.use(VueRouter)
 
 Vue.prototype.$http = axios
 
+Vue.prototype.$eventBus = new Vue()
+
 Vue.config.productionTip = false
 
 new Vue({

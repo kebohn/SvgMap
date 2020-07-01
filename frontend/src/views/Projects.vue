@@ -1,16 +1,5 @@
 <template>
-  <div>
-      <section class="hero">
-          <div class="hero-body">
-              <div class="container">
-                  <h1 class="title">
-                      Projects
-                  </h1>
-              </div>
-          </div>
-      </section>
-      <project-list></project-list>
-  </div>
+    <project-list></project-list>
 </template>
 
 <script>
@@ -21,6 +10,7 @@ export default {
     components: {ProjectList},
     created() {
         this.$emit('update:layout', DefaultLayout)
+        this.$eventBus.$emit('titleUpdated', 'Projects');
     }
 
 }

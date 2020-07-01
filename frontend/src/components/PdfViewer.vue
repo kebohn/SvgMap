@@ -5,15 +5,15 @@
             </b-icon>
         </b-loading>
         <b-pagination v-if="!isLoading"
-                :total="numPages"
-                :current.sync="current"
-                range-before="1"
-                range-after="1"
-                order="is-centered"
-                perPage= "1"
-                icon-prev="chevron-left"
-                icon-next="chevron-right"
-                @change="page = $event">
+                      :total="numPages"
+                      :current.sync="current"
+                      range-before="1"
+                      range-after="1"
+                      order="is-centered"
+                      perPage="1"
+                      icon-prev="chevron-left"
+                      icon-next="chevron-right"
+                      @change="page = $event">
         </b-pagination>
         <pdf :src="src"
              :page="page"

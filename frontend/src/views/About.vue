@@ -1,19 +1,19 @@
 <template>
- <div>
-     About Page
- </div>
+    <div>
+        About Page
+    </div>
 </template>
 
 <script>
-import DefaultLayout from "@/layouts/DefaultLayout";
+    import DefaultLayout from "@/layouts/DefaultLayout";
 
-export default {
-    name: 'About',
-    created() {
-        this.$emit('update:layout', DefaultLayout)
+    export default {
+        name: 'About',
+        created() {
+            this.$emit('update:layout', DefaultLayout)
+        }
+
     }
-
-}
 </script>
 
 <style>

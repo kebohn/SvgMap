@@ -1,16 +1,5 @@
 <template>
-    <div>
-        <section class="hero">
-            <div class="hero-body">
-                <div class="container">
-                    <h1 class="title">
-                        New Project
-                    </h1>
-                </div>
-            </div>
-        </section>
-        <FileUploader></FileUploader>
-    </div>
+    <FileUploader></FileUploader>
 </template>
 
 <script>
@@ -22,7 +11,8 @@
         components: {FileUploader},
         created() {
             this.$emit('update:layout', DefaultLayout)
-        }
+            this.$eventBus.$emit('titleUpdated', 'New Project');
+        },
     }
 </script>
 

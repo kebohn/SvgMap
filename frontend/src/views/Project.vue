@@ -1,16 +1,7 @@
 <template>
     <multipane class="vertical-panes" layout="vertical">
         <div class="pane" :style="{ minWidth: '30%', width:'100%'}" @mousedown.stop>
-            <section class="hero">
-                <div class="hero-body">
-                    <div class="container">
-                        <h1 class="title">
-                            Project {{this.project.name}}
-                        </h1>
-                    </div>
-                </div>
-            </section>
-            <svg-container :fileId=fileId v-on:openPdf="openPdf"></svg-container>
+            <svg-container class="svg" :fileId=fileId v-on:openPdf="openPdf"></svg-container>
         </div>
         <multipane-resizer></multipane-resizer>
         <div class="pane" :style="{ minWidth: '50%', flexGrow: 1}" v-if="showPdfComponent">
@@ -47,7 +38,8 @@ export default {
     methods: {
         fetchProject() {
             this.$http.get(`/api/projects/${this.id}`).then(response => {
-                this.project = response.data
+                this.project = response.data;
+                this.$eventBus.$emit('titleUpdated', this.project.name);
                 for (let file of response.data.files) {
                     if (file.name.split('.').pop().toLowerCase() === 'svg') {
                         this.fileId = file.id;
