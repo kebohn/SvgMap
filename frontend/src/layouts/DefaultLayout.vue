@@ -24,7 +24,7 @@
                 </b-navbar-item>
             </template>
         </b-navbar>
-        <main ref="main" class="section m-t-xl">
+        <main ref="main" class="p-t-xxl p-r-lg p-l-lg">
             <slot></slot>
         </main>
         <footer id="footer">

@@ -1,7 +1,5 @@
 <template>
-    <section>
-        <figure ref="svg" v-html="content" @click="getLink($event)"></figure>
-    </section>
+    <figure class="svg" ref="svg" v-html="content" @click="getLink($event)"></figure>
 </template>
 
 <script>
@@ -78,3 +76,8 @@
         }
     }
 </script>
+<style scoped>
+    .svg {
+        height: 100vh;
+    }
+</style>

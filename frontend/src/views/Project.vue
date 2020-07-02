@@ -78,6 +78,7 @@ export default {
     }
     .vertical-panes > .pane {
         overflow: hidden;
+        height: 90vh;
     }
     .vertical-panes > .pane ~ .pane {
         border-left: 1px solid #ccc;
