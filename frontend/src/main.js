@@ -3,6 +3,7 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import router from '@/router.js'
 import axios from 'axios'
+import panzoom from 'panzoom'
 import Buefy from 'buefy'
 import '@/assets/css/spacing.scss'
 import '@/assets/css/main.scss'
@@ -27,6 +28,8 @@ Vue.use(VueRouter)
 Vue.prototype.$http = axios
 
 Vue.prototype.$eventBus = new Vue()
+
+Vue.prototype.$panzoom = panzoom
 
 Vue.config.productionTip = false
 

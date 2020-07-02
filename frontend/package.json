@@ -15,6 +15,7 @@
     "buefy": "^0.8.20",
     "core-js": "^3.6.4",
     "lodash.range": "^3.2.0",
+    "panzoom": "^9.2.5",
     "vue": "^2.6.11",
     "vue-multipane": "^0.9.5",
     "vue-pdf": "^4.1.0",

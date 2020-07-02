@@ -15,6 +15,7 @@
         data() {
             return {
                 content: '',
+                panzoomInstance: undefined
             }
         },
         watch: {
@@ -56,6 +57,12 @@
                     svg.setAttribute("height", "100%");
                     svg.setAttribute("width", "100%");
                     this.$emit('updateLinkList', Array.from(svg.getElementsByTagName("a")));
+                    this.panzoomInstance = this.$panzoom(svg, {
+                        maxZoom: 4,
+                        minZoom: 0.2,
+                        bounds: true,
+                        boundsPadding: 0.3
+                    });
                 }
             },
             async getLink(event) {
@@ -72,6 +79,14 @@
                         }
                     }
                 }
+            },
+            enlargeSvg() {
+                let coordinates = this.panzoomInstance.getTransform()
+                this.panzoomInstance.smoothZoom(coordinates.x, coordinates.y, 1.25);
+            },
+            reduceSvg() {
+                let coordinates = this.panzoomInstance.getTransform()
+                this.panzoomInstance.smoothZoom(coordinates.x, coordinates.y, 0.8);
             }
         }
     }

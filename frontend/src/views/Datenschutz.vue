@@ -1,4 +1,6 @@
 <template>
+    <!--TODO: insert content-->
+    <div></div>
 </template>
 
 <script>
