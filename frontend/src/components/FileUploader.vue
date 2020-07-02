@@ -147,6 +147,7 @@
                 }
                 this.uploaded = new Array(this.links.length).fill(false);
                 this.$nextTick(() => {
+                    this.$refs.svgContainer.disableLinks();
                     this.$refs.svgContainer.disablePan();
                 })
             },

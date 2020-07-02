@@ -15,7 +15,8 @@
         data() {
             return {
                 content: '',
-                pan: undefined
+                pan: undefined,
+                linkIsDisabled: false
             }
         },
         watch: {
@@ -39,7 +40,6 @@
                 }
             }
         },
-
         methods: {
             async fetchFileById(fileId) {
                 return this.$http.get(`/api/files/${fileId}`);
@@ -68,18 +68,24 @@
             },
             async getLink(event) {
                 event.preventDefault();
+                if (this.linkIsDisabled) {return; }
                 let node = event.target.parentNode;
-                if (node.tagName !== 'FIGURE') {
+                if (node.tagName !== 'FIGURE' && node.tagName !== "DIV") {
                     while (node.tagName !== 'a' && node.tagName !== 'svg') {
                         node = node.parentNode;
                     }
                     if (node.tagName === 'a') {
-                        let promise = await this.fetchFileByName(node.getAttribute('xlink:href'))
+                        let promise = await this.fetchFileByName(node.getAttribute('xlink:href'));
                         if (promise !== null) {
                             this.$emit('openPdf', promise.data);
+                        } else {
+                            this.$emit('openExternalSource', node.getAttribute('xlink:href'));
                         }
                     }
                 }
+            },
+            disableLinks() {
+                this.linkIsDisabled = true;
             },
             enlargeSvg() {
                 let coordinates = this.pan.getTransform()
