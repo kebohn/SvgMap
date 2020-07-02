@@ -6,9 +6,6 @@
                         @click="submit()" class="button is-link">Submit
                 </button>
             </div>
-            <div class="control">
-                <button class="button is-link is-light">Back</button>
-            </div>
         </div>
         <div class="is-clearfix"></div>
 

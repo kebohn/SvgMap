@@ -1,6 +1,14 @@
 <template>
     <multipane class="vertical-panes" layout="vertical">
         <div class="pane" :style="{ minWidth: '30%', width:'100%'}" @mousedown.stop>
+            <div class="buttons">
+                <b-button size="is-medium" icon-left="plus">
+                </b-button>
+                <b-button size="is-medium" icon-left="minus">
+                </b-button>
+                <b-button v-if="showPdfComponent"  size="is-medium" icon-left="eye-slash" @click="showPdfComponent = false">
+                </b-button>
+            </div>
             <svg-container class="svg" :fileId=fileId v-on:openPdf="openPdf"></svg-container>
         </div>
         <multipane-resizer></multipane-resizer>

@@ -2,7 +2,7 @@
     <div id="page-container">
         <b-navbar class="is-fixed-top" shadow="shadow">
             <template slot="brand">
-                <b-navbar-item tag="router-link" :to="{ path: '/' }">
+                <b-navbar-item tag="router-link" :to="{ path: '/' }" class="m-r-xl">
                     <img width="100"
                          :src="publicPath + '2020_RWF_iusmaps.online_Logo.svg'" alt=""
                     />
@@ -19,9 +19,7 @@
                         New Project
                     </router-link>
                 </b-navbar-item>
-            </template>
-            <template slot="end">
-                <b-navbar-item tag="div" class="has-text-weight-bold is-capitalized is-size-3">
+                <b-navbar-item tag=div class="title is-size-3 m-l-xxl" :active="false">
                     {{this.title}}
                 </b-navbar-item>
             </template>
@@ -30,11 +28,20 @@
             <slot></slot>
         </main>
         <footer id="footer">
-            <div class="content has-text-centered">
-                <p>
-                    This is the footer
-                </p>
-            </div>
+            <b-navbar class="is-fixed-bottom" shadow="shadow">
+                <template slot="start">
+                    <b-navbar-item class="m-l-xxl">
+                        <router-link to="/impressum">
+                            Impressum
+                        </router-link>
+                    </b-navbar-item>
+                    <b-navbar-item>
+                        <router-link to="/datenschutz">
+                            Datenschutz
+                        </router-link>
+                    </b-navbar-item>
+                </template>
+            </b-navbar>
         </footer>
     </div>
 </template>
@@ -47,7 +54,7 @@
                 title: ''
             }
         },
-        mounted() {
+        created() {
             this.$eventBus.$on('titleUpdated', this.titleUpdated)
         },
         methods: {

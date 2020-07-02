@@ -4,6 +4,8 @@ import ProjectsPage from '@/views/Projects.vue'
 import ProjectPage from '@/views/Project.vue'
 import NotFoundPage from '@/views/NotFound.vue'
 import FileUpload from "@/views/FileUpload";
+import Impressum from "@/views/Impressum";
+import Datenschutz from "@/views/Datenschutz";
 
 const router = new VueRouter({
     mode: 'history',
@@ -13,6 +15,8 @@ const router = new VueRouter({
         { path: '/project/:id', component: ProjectPage, name: 'Project', props: true},
         { path: '/about', component: AboutPage},
         { path: '/upload', component: FileUpload},
+        { path: '/impressum', component: Impressum},
+        { path: '/datenschutz', component: Datenschutz},
         { path: '/*', component: NotFoundPage},
     ]
 })

@@ -1,21 +1,16 @@
 <template>
-    <project-list></project-list>
 </template>
 
 <script>
 import DefaultLayout from '@/layouts/DefaultLayout';
-import ProjectList from "@/components/ProjectList";
 export default {
-    name: 'Projects',
-    components: {ProjectList},
+    name: 'Impressum',
     created() {
         this.$emit('update:layout', DefaultLayout);
-        this.$eventBus.$emit('titleUpdated', 'Projects');
+        this.$eventBus.$emit('titleUpdated', 'Impressum');
     }
 }
 </script>
-
-
 <style>
 
 </style>
