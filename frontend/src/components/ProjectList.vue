@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <div class="listContainer">
         <div class="buttons">
             <b-button type="is-primary" @click="selected = null"
                       :disabled="!selected" icon-left="times">
@@ -18,7 +18,7 @@
                 :selected.sync="selected"
                 focusable>
         </b-table>
-    </section>
+    </div>
 </template>
 
 <script>
@@ -86,3 +86,5 @@
         }
     }
 </script>
+<style scoped>
+</style>

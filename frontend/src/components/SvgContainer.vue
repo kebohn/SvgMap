@@ -15,7 +15,7 @@
         data() {
             return {
                 content: '',
-                panzoomInstance: undefined
+                pan: undefined
             }
         },
         watch: {
@@ -57,11 +57,12 @@
                     svg.setAttribute("height", "100%");
                     svg.setAttribute("width", "100%");
                     this.$emit('updateLinkList', Array.from(svg.getElementsByTagName("a")));
-                    this.panzoomInstance = this.$panzoom(svg, {
+                    this.pan = this.$panzoom(svg, {
                         maxZoom: 4,
-                        minZoom: 0.2,
+                        minZoom: 0.4,
                         bounds: true,
-                        boundsPadding: 0.3
+                        boundsPadding: 0.4,
+                        smoothScroll: false
                     });
                 }
             },
@@ -81,12 +82,22 @@
                 }
             },
             enlargeSvg() {
-                let coordinates = this.panzoomInstance.getTransform()
-                this.panzoomInstance.smoothZoom(coordinates.x, coordinates.y, 1.25);
+                let coordinates = this.pan.getTransform()
+                this.pan.smoothZoom(coordinates.x, coordinates.y, 1.2);
             },
             reduceSvg() {
-                let coordinates = this.panzoomInstance.getTransform()
-                this.panzoomInstance.smoothZoom(coordinates.x, coordinates.y, 0.8);
+                let coordinates = this.pan.getTransform()
+                this.pan.smoothZoom(coordinates.x, coordinates.y, 0.8);
+            },
+            resetSvg() {
+                this.pan.moveTo(0, 0);
+                this.pan.zoomAbs(0, 0, 1);
+            },
+            disablePan() {
+                this.pan.pause();
+            },
+            enablePan() {
+                this.pan.resume();
             }
         }
     }
@@ -94,5 +105,8 @@
 <style scoped>
     .svg {
         height: 100vh;
+    }
+    .svg:focus {
+        outline-color: rgba(255, 255, 255, 0);
     }
 </style>

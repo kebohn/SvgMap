@@ -40,21 +40,21 @@
         </b-field>
 
         <div class="tags">
-      <span
-              v-for="(file, index) in dropFiles"
-              :key="index"
-              :id="file.name"
-              class="tag is-info"
-      >
-        {{ file.name }}
-        <button
-                class="delete is-small"
-                type="button"
-                @click="deleteDropFile(index)"
-        ></button>
-      </span>
+              <span
+                      v-for="(file, index) in dropFiles"
+                      :key="index"
+                      :id="file.name"
+                      class="tag is-info">
+                {{ file.name }}
+                <button
+                        class="delete is-small"
+                        type="button"
+                        @click="deleteDropFile(index)"
+                ></button>
+              </span>
         </div>
-        <svg-container ref="svgContainer" :file=file v-on:updateLinkList="updateLinkList"></svg-container>
+        <svg-container class="svgContainer" ref="svgContainer" :file=file
+                       v-on:updateLinkList="updateLinkList"></svg-container>
     </section>
 </template>
 
@@ -146,6 +146,9 @@
                     }
                 }
                 this.uploaded = new Array(this.links.length).fill(false);
+                this.$nextTick(() => {
+                    this.$refs.svgContainer.disablePan();
+                })
             },
             activateBtn(e) {
                 this.clicked = e;
@@ -173,3 +176,8 @@
         },
     };
 </script>
+<style scoped>
+    .svgContainer {
+        height: 50vh;
+    }
+</style>

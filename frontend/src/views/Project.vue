@@ -1,15 +1,17 @@
 <template>
     <multipane class="vertical-panes" layout="vertical">
         <div class="pane" :style="{ minWidth: '30%', width:'100%'}" @mousedown.stop>
-            <div class="buttons">
+            <div class="buttons svgControls">
                 <b-button size="is-medium" icon-left="plus" @click="enlargeSvg()">
                 </b-button>
                 <b-button size="is-medium" icon-left="minus" @click="reduceSvg()">
                 </b-button>
+                <b-button size="is-medium" icon-left="expand-alt" @click="resetSvg()">
+                </b-button>
                 <b-button v-if="showPdfComponent"  size="is-medium" icon-left="eye-slash" @click="showPdfComponent = false">
                 </b-button>
             </div>
-            <svg-container ref="svg" class="svg" :fileId=fileId v-on:openPdf="openPdf"></svg-container>
+            <svg-container ref="svgContainer" class="svgContainer" :fileId=fileId v-on:openPdf="openPdf"></svg-container>
         </div>
         <multipane-resizer></multipane-resizer>
         <div class="pane" :style="{ minWidth: '50%', flexGrow: 1}" v-if="showPdfComponent">
@@ -65,16 +67,23 @@ export default {
             });
         },
         enlargeSvg() {
-            this.$refs.svg.enlargeSvg();
+            this.$refs.svgContainer.enlargeSvg();
         },
         reduceSvg() {
-            this.$refs.svg.reduceSvg();
+            this.$refs.svgContainer.reduceSvg();
+        },
+        resetSvg() {
+            this.$refs.svgContainer.resetSvg();
         }
     }
 }
 </script>
 
 <style scoped>
+    .svgControls {
+        z-index: 2;
+        position: relative;
+    }
     .layout-v > .multipane-resizer {
         height: unset;
     }
