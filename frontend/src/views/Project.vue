@@ -2,28 +2,34 @@
     <multipane class="vertical-panes" layout="vertical">
         <div class="pane" ref="svgPane" :style="{ minWidth: '30%', width: '100%'}" @mousedown.stop>
             <div class="buttons svgControls">
-                <b-tooltip label="Enlarge"
+                <b-tooltip type="is-link" label="Show Files"
+                           position="is-bottom"
+                           animated>
+                    <b-button size="is-medium" icon-left="file" @click="showFiles()">
+                    </b-button>
+                </b-tooltip>
+                <b-tooltip type="is-link" label="Enlarge"
                            position="is-bottom"
                            animated>
                     <b-button size="is-medium" icon-left="plus" @click="enlargeSvg()">
                     </b-button>
                 </b-tooltip>
-                <b-tooltip label="Reduce"
+                <b-tooltip type="is-link" label="Reduce"
                            position="is-bottom"
                            animated>
                     <b-button size="is-medium" icon-left="minus" @click="reduceSvg()">
                     </b-button>
                 </b-tooltip>
-                <b-tooltip label="Reset"
+                <b-tooltip type="is-link" label="Reset"
                            position="is-bottom"
                            animated>
                     <b-button size="is-medium" icon-left="expand-alt" @click="resetSvg()">
                     </b-button>
                 </b-tooltip>
-                <b-tooltip label="Close Viewer"
+                <b-tooltip type="is-link" label="Close Viewer"
                            position="is-bottom"
                            animated>
-                    <b-button v-if="showPdfComponent || showSrcComponent"  size="is-medium" icon-left="eye-slash"
+                    <b-button v-if="showPdfComponent || showSrcComponent || showFileComponent"  size="is-medium" icon-left="eye-slash"
                               @click="hideComponent()">
                     </b-button>
                 </b-tooltip>
@@ -31,10 +37,11 @@
             <svg-container ref="svgContainer" class="svgContainer" :fileId=fileId v-on:openPdf="openPdf"
                                         v-on:openExternalSource="openExternalSource"></svg-container>
         </div>
-        <multipane-resizer v-if="showPdfComponent || showSrcComponent"></multipane-resizer>
-        <div class="pane" :style="{ minWidth: '40%', flexGrow: 1}" v-if="showPdfComponent || showSrcComponent">
+        <multipane-resizer v-if="showPdfComponent || showSrcComponent || showFileComponent"></multipane-resizer>
+        <div class="pane" :style="{ minWidth: '40%', flexGrow: 1}" v-if="showPdfComponent || showSrcComponent || showFileComponent">
             <pdf-viewer v-if="showPdfComponent" v-bind:file="file" ref="pdfViewer"></pdf-viewer>
             <src-viewer v-if="showSrcComponent" v-bind:src="src" ref="srcViewer"></src-viewer>
+            <file-viewer v-if="showFileComponent" v-bind:files="project.files" ref="fileViewer"></file-viewer>
         </div>
     </multipane>
 </template>
@@ -45,12 +52,13 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import SvgContainer from "@/components/SvgContainer";
 import PdfViewer from "@/components/PdfViewer";
 import SrcViewer from "@/components/SrcViewer";
+import FileViewer from "@/components/FileViewer";
 export default {
     name: 'Project',
     props: {
         id: null
     },
-    components: {SvgContainer, PdfViewer, SrcViewer, Multipane, MultipaneResizer },
+    components: {SvgContainer, PdfViewer, SrcViewer, FileViewer, Multipane, MultipaneResizer },
     data() {
         return {
             project: Object,
@@ -59,6 +67,7 @@ export default {
             src: undefined,
             showPdfComponent: false,
             showSrcComponent: false,
+            showFileComponent: false,
         }
     },
     created() {
@@ -83,6 +92,7 @@ export default {
         async openPdf(blob) {
             this.showSrcComponent = false;
             this.showPdfComponent = false;
+            this.showFileComponent = false;
             this.$nextTick(async () => {
                 this.showPdfComponent = true;
                 this.file = new Uint8Array(await blob.arrayBuffer());
@@ -91,12 +101,19 @@ export default {
         },
         async openExternalSource(src) {
             this.showPdfComponent = false;
+            this.showFileComponent = false;
             this.showSrcComponent = true;
             this.src = src;
+        },
+        showFiles() {
+            this.showPdfComponent = false;
+            this.showSrcComponent = false;
+            this.showFileComponent = true;
         },
         hideComponent() {
             this.showPdfComponent = false;
             this.showSrcComponent = false;
+            this.showFileComponent = false;
             this.$refs.svgPane.style["width"] = "100%";
         },
         enlargeSvg() {
@@ -127,7 +144,7 @@ export default {
     }
     .vertical-panes > .pane {
         overflow: hidden;
-        height: 90vh;
+        height: 80vh;
     }
     .vertical-panes > .pane ~ .pane {
         border-left: 1px solid #ccc;

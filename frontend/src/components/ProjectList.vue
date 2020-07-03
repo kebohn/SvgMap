@@ -1,23 +1,21 @@
 <template>
     <div class="listContainer">
-        <div class="buttons">
-            <b-button type="is-primary" @click="selected = null"
-                      :disabled="!selected" icon-left="times">
-                Clear selection
-            </b-button>
-            <b-button type="is-primary" :disabled="!selected" icon-left="trash" @click="confirmDeleteProject">
-                Delete
-            </b-button>
-            <b-button type="is-primary" :disabled="!selected" icon-left="folder" @click="openProject">
-                Open Project
-            </b-button>
-        </div>
         <b-table
                 :data="projects"
                 :columns="columns"
                 :selected.sync="selected"
-                focusable>
+                hoverable
+                paginated pagination-position="top"
+                per-page="50">
         </b-table>
+        <div class="buttons p-t-lg" style="float: right">
+            <b-button type="is-link" :disabled="!selected" icon-left="folder" @click="openProject">
+                Open Project
+            </b-button>
+            <b-button type="is-link" :disabled="!selected" icon-left="trash" @click="confirmDeleteProject">
+                Delete
+            </b-button>
+        </div>
     </div>
 </template>
 
