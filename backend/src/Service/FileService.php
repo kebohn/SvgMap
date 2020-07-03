@@ -40,4 +40,16 @@ class FileService {
         $path = $this->configuration->getString('uploads');
         return $path .'/'. $file->getRelPath() .'.'. pathinfo($file->getName(), PATHINFO_EXTENSION);
     }
+
+    public function exchangeFile($fileId, $newFile) {
+        try {
+            $fileRepository = $this->em->getRepository(File::class);
+            $oldFile = $fileRepository->find($fileId);
+            $ext = pathinfo($newFile->getClientFilename(), PATHINFO_EXTENSION);
+
+            $newFile->moveTo($this->configuration->getString('uploads').'/'.$oldFile->getRelPath().'.'.$ext);
+        } catch(\Exception $e) {
+            throw $e;
+        }
+    }
 }

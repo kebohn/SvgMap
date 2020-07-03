@@ -15,8 +15,11 @@ class FileController {
         $this->fileService = $fileService;
     }
 
-    public function createFile(Request $request, Response $response, $args){
-        
+    public function exchangeFile(Request $request, Response $response, $args){
+        $fileId = $args['fileId'];
+        $file = $request->getUploadedFiles()['files'][0]; // only one file
+        $this->fileService->exchangeFile($fileId, $file);
+        return $response->withStatus(200);
     }
 
     public function deleteFile(Request $request, Response $response, $args){

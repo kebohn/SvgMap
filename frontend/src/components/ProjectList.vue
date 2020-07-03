@@ -59,14 +59,23 @@
                     .then(response => {
                         if (response.status === 200) {
                             if (this.removeDeletedProjectFromArray()) {
-                                this.$buefy.toast.open('Project deleted!');
+                                this.$buefy.toast.open({
+                                    message: 'Project deleted!',
+                                    type: 'is-success'
+                                });
                             }
                         } else {
-                            this.$buefy.toast.open(`Project could not be deleted!\n (${response.status})`);
+                            this.$buefy.toast.open({
+                                message: `Project could not be deleted!\n (${response.status})`,
+                                type: 'is-danger'
+                            });
                         }
                     })
                     .catch(error => {
-                        this.$buefy.toast.open(`An error occurred, please try again!\n ${error}`);
+                        this.$buefy.toast.open({
+                            message: `An error occurred, please try again!\n ${error}`,
+                            type: 'is-danger'
+                        });
                     });
             },
             removeDeletedProjectFromArray() {

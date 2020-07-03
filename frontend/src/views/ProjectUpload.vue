@@ -72,11 +72,17 @@
                 this.$http.post('/api/projects', formData, {
                     headers: {'x-project-title': this.projectName}
                 }).then(response => {
-                    this.$buefy.toast.open(`Project created successfully`)
+                    this.$buefy.toast.open({
+                        message: `Project created successfully`,
+                        type: 'is-success'
+                    });
                     this.$router.push({name: 'Project', params: {id: response.data['projectId']}})
 
                 }).catch(error => {
-                    this.$buefy.toast.open(`An error occurred, please try again!\n ${error}`);
+                    this.$buefy.toast.open({
+                        message: `An error occurred, please try again!\n ${error}`,
+                        type: 'is-danger'
+                    });
                 });
             },
             deleteDropFile(index) {

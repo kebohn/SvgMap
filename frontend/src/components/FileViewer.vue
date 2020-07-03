@@ -62,18 +62,35 @@
                         }
                     })
                 } else {
-                    this.$buefy.toast.open(`Filenames do not match, please try again\n`);
+                    this.$buefy.toast.open({
+                        message: `Filenames do not match, please try again`,
+                        type: 'is-warning'
+                    });
                 }
             },
             updateFile(newFile) {
                 console.log(newFile);
+                let formData = new FormData();
+                    formData.append('files[0]', newFile);
+                this.$http.post(`/api/files/${this.selected.id}`, formData)
+                .then(() => {
+                    this.$buefy.toast.open({
+                        message: `File '${this.selected.name}' changed successfully`,
+                        type: 'is-success'
+                    });
+                }).catch(error => {
+                    this.$buefy.toast.open({
+                        message: `An error occurred, please try again!\n ${error}`,
+                        type: 'is-danger'
+                    });
+                });
             },
             checkLinksCondition() {
                 this.$nextTick(() => {
                     this.isDisabled = this.selected === null || this.$refs.fileUploader.dropFiles.name === undefined;
                 })
             },
-            deleteDropFile(index) {
+            deleteDropFile() {
                 this.isDisabled = true;
                 this.$refs.fileUploader.resetDropFiles()
             },

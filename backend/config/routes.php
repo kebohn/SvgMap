@@ -60,7 +60,7 @@ return function (App $app) {
 
         $group->get('/files/{fileId}', FileController::class . ':getFile');
         $group->get('/files/{projectId}/file', FileController::class . ':getFile');
-        $group->post('/files/{projectId}', FileController::class . ':createFile');
+        $group->post('/files/{fileId}', FileController::class . ':exchangeFile');
         $group->delete('/files/{fileId}', FileController::class . ':deleteFile');
     });
 };
