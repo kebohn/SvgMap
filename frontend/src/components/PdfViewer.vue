@@ -1,5 +1,5 @@
 <template>
-    <b-notification :closable="false">
+    <b-notification class="wrapper" :closable="false">
         <b-loading :is-full-page="false" :active.sync="isLoading">
             <b-icon icon="sync-alt" size="is-large" custom-class="fa-spin">
             </b-icon>
@@ -15,10 +15,12 @@
                       icon-next="chevron-right"
                       @change="page = $event">
         </b-pagination>
-        <pdf :src="src"
-             :page="page"
-             @loaded="isLoading = false">
-        </pdf>
+        <div class="pdfContainer m-t-md">
+            <pdf :src="src"
+                 :page="page"
+                 @loaded="isLoading = false">
+            </pdf>
+        </div>
     </b-notification>
 </template>
 
@@ -39,7 +41,6 @@
             return {
                 isLoading: true,
                 src: undefined,
-                pageCount: undefined,
                 numPages: undefined,
                 pdf: undefined,
                 pages: [],
@@ -70,4 +71,11 @@
     }
 </script>
 <style scoped>
+    .wrapper {
+        height: 100vh;
+    }
+    .pdfContainer {
+        overflow-y: auto;
+        max-height: 74vh;
+    }
 </style>
