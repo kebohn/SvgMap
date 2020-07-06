@@ -1,5 +1,12 @@
 <template>
     <b-notification class="wrapper" :closable="false">
+                <b-field class=" is-pulled-right">
+                    <b-select v-model="zoomVal" placeholder="100%" size="is-small">
+                        <option v-for="option in options" v-bind:value="option.value">
+                            {{option.text}}
+                        </option>
+                    </b-select>
+                </b-field>
         <b-loading :is-full-page="false" :active.sync="isLoading">
             <b-icon icon="sync-alt" size="is-large" custom-class="fa-spin">
             </b-icon>
@@ -7,18 +14,19 @@
         <b-pagination v-if="!isLoading"
                       :total="numPages"
                       :current.sync="current"
-                      range-before="1"
-                      range-after="1"
-                      order="is-centered"
                       perPage="1"
+                      size="is-small"
+                      simple="true"
+                      order="is-centered"
                       icon-prev="chevron-left"
                       icon-next="chevron-right"
                       @change="page = $event">
         </b-pagination>
-        <div class="pdfContainer m-t-md">
-            <pdf :src="src"
+        <div class="pdfContainer m-t-md column is-centered">
+            <pdf ref="pdf" :src="src"
                  :page="page"
-                 @loaded="isLoading = false">
+                 @loaded="isLoading = false"
+                 :style="width">
             </pdf>
         </div>
     </b-notification>
@@ -46,7 +54,24 @@
                 pages: [],
                 page: undefined,
                 current: 1,
+                zoomVal: 100,
+                options: [
+                    { text: '50%', value: '50' },
+                    { text: '75%', value: '75' },
+                    { text: '100%', value: '100' },
+                    { text: '125%', value: '125' },
+                    { text: '150%', value: '150' },
+                    { text: '175%', value: '175' },
+                    { text: '200%', value: '200' },
+                    { text: '225%', value: '225' },
+                    { text: '250%', value: '250' },
+                ]
             }
+        },
+        computed: {
+            width() {
+                return `width: ${this.zoomVal}%`;
+            },
         },
         watch: {
             pdf(pdf) {
@@ -66,16 +91,21 @@
                         this.numPages = pdf.numPages;
                     });
                 });
-            },
+            }
         }
     }
 </script>
 <style scoped>
     .wrapper {
-        height: 100vh;
+        height:100vh;
+        position:relative;
     }
     .pdfContainer {
-        overflow-y: auto;
-        max-height: 74vh;
+        overflow: auto;
+        position: absolute;
+        max-height: 65vh;
+        max-width: 35vw;
+        right:0;left:0;
+        margin:auto;
     }
 </style>
