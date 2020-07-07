@@ -1,12 +1,22 @@
 <template>
     <b-notification class="wrapper" :closable="false">
-                <b-field class=" is-pulled-right">
-                    <b-select v-model="zoomVal" placeholder="100%" size="is-small">
-                        <option v-for="option in options" v-bind:value="option.value">
-                            {{option.text}}
-                        </option>
-                    </b-select>
-                </b-field>
+        <div class="field is-grouped is-pulled-right">
+            <b-tooltip type="is-link" label="Download File"
+                       position="is-bottom"
+                       animated>
+                <b-button size="is-small"
+                          icon-left="download"
+                          @click="downloadFile">
+                </b-button>
+            </b-tooltip>
+            <b-field >
+                <b-select v-model="zoomVal" placeholder="100%" size="is-small">
+                    <option v-for="(option, index) in options" v-bind:value="option.value" :key="index">
+                        {{option.text}}
+                    </option>
+                </b-select>
+            </b-field>
+        </div>
         <b-loading :is-full-page="false" :active.sync="isLoading">
             <b-icon icon="sync-alt" size="is-large" custom-class="fa-spin">
             </b-icon>
@@ -16,13 +26,13 @@
                       :current.sync="current"
                       perPage="1"
                       size="is-small"
-                      simple="true"
+                      simple="simple"
                       order="is-centered"
                       icon-prev="chevron-left"
                       icon-next="chevron-right"
                       @change="page = $event">
         </b-pagination>
-        <div class="pdfContainer m-t-md column is-centered">
+        <div class="pdfContainer">
             <pdf ref="pdf" :src="src"
                  :page="page"
                  @loaded="isLoading = false"
@@ -91,6 +101,10 @@
                         this.numPages = pdf.numPages;
                     });
                 });
+            },
+            downloadFile() {
+                this.$emit('downloadFile')
+
             }
         }
     }
@@ -98,14 +112,13 @@
 <style scoped>
     .wrapper {
         height:100vh;
-        position:relative;
     }
     .pdfContainer {
         overflow: auto;
         position: absolute;
-        max-height: 65vh;
-        max-width: 35vw;
-        right:0;left:0;
+        max-height: 75vh;
+        max-width: 70vw;
+        right:1%;left:1%;
         margin:auto;
     }
 </style>

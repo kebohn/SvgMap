@@ -39,7 +39,8 @@
         </div>
         <multipane-resizer v-if="showPdfComponent || showSrcComponent || showFileComponent"></multipane-resizer>
         <div class="pane" :style="{ minWidth: '40%', flexGrow: 1}" v-if="showPdfComponent || showSrcComponent || showFileComponent">
-            <pdf-viewer v-if="showPdfComponent" v-bind:file="file" ref="pdfViewer"></pdf-viewer>
+            <pdf-viewer v-if="showPdfComponent" v-bind:file="file" ref="pdfViewer"
+            v-on:downloadFile="downloadFile"></pdf-viewer>
             <src-viewer v-if="showSrcComponent" v-bind:src="src" ref="srcViewer"></src-viewer>
             <file-viewer v-if="showFileComponent" v-bind:files="project.files" ref="fileViewer"></file-viewer>
         </div>
@@ -124,6 +125,14 @@ export default {
         },
         resetSvg() {
             this.$refs.svgContainer.resetSvg();
+        },
+        downloadFile() {
+            let fileURL = window.URL.createObjectURL(new Blob([this.file]));
+            let fileLink = document.createElement('a');
+            fileLink.href = fileURL;
+            fileLink.setAttribute('download', 'download.pdf');
+            document.body.appendChild(fileLink);
+            fileLink.click();
         }
     }
 }
