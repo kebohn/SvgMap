@@ -1,21 +1,33 @@
 <template>
     <b-notification class="wrapper" :closable="false">
-        <div class="field is-grouped is-pulled-right">
+        <div class="field is-grouped is-pulled-left">
+            <b-tooltip type="is-link" label="Adjust Zoom"
+                       position="is-right"
+                       animated>
+                <b-field >
+                    <b-select v-model="zoomVal" placeholder="100%" size="is-small">
+                        <option v-for="(option, index) in options" v-bind:value="option.value" :key="index">
+                            {{option.text}}
+                        </option>
+                    </b-select>
+                </b-field>
+            </b-tooltip>
+            <b-tooltip type="is-link" :label="title"
+                       position="is-right"
+                       animated>
+                <b-button size="is-small"
+                          icon-left="info">
+                </b-button>
+            </b-tooltip>
             <b-tooltip type="is-link" label="Download File"
-                       position="is-bottom"
+                       position="is-right"
                        animated>
                 <b-button size="is-small"
                           icon-left="download"
                           @click="downloadFile">
                 </b-button>
             </b-tooltip>
-            <b-field >
-                <b-select v-model="zoomVal" placeholder="100%" size="is-small">
-                    <option v-for="(option, index) in options" v-bind:value="option.value" :key="index">
-                        {{option.text}}
-                    </option>
-                </b-select>
-            </b-field>
+
         </div>
         <b-loading :is-full-page="false" :active.sync="isLoading">
             <b-icon icon="sync-alt" size="is-large" custom-class="fa-spin">
@@ -27,11 +39,12 @@
                       perPage="1"
                       size="is-small"
                       simple="simple"
-                      order="is-centered"
+                      order="is-right"
                       icon-prev="chevron-left"
                       icon-next="chevron-right"
                       @change="page = $event">
         </b-pagination>
+        <h1 class="title is-5"></h1>
         <div class="pdfContainer">
             <pdf ref="pdf" :src="src"
                  :page="page"
@@ -53,6 +66,9 @@
         props: {
             file: {
                 type: Uint8Array
+            },
+            title: {
+                type: String
             }
         },
         data() {
@@ -116,7 +132,7 @@
     .pdfContainer {
         overflow: auto;
         position: absolute;
-        max-height: 75vh;
+        max-height: 74vh;
         max-width: 70vw;
         right:1%;left:1%;
         margin:auto;

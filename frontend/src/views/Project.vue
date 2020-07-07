@@ -39,7 +39,7 @@
         </div>
         <multipane-resizer v-if="showPdfComponent || showSrcComponent || showFileComponent"></multipane-resizer>
         <div class="pane" :style="{ minWidth: '40%', flexGrow: 1}" v-if="showPdfComponent || showSrcComponent || showFileComponent">
-            <pdf-viewer v-if="showPdfComponent" v-bind:file="file" ref="pdfViewer"
+            <pdf-viewer v-if="showPdfComponent" v-bind:file="file" v-bind:title="title" ref="pdfViewer"
             v-on:downloadFile="downloadFile"></pdf-viewer>
             <src-viewer v-if="showSrcComponent" v-bind:src="src" ref="srcViewer"></src-viewer>
             <file-viewer v-if="showFileComponent" v-bind:files="project.files" ref="fileViewer"></file-viewer>
@@ -65,6 +65,7 @@ export default {
             project: Object,
             fileId: -1,
             file: null,
+            title: undefined,
             src: undefined,
             showPdfComponent: false,
             showSrcComponent: false,
@@ -90,17 +91,25 @@ export default {
                 }
             });
         },
-        async openPdf(blob) {
+        async openPdf(args) {
+            if (this.showSrcComponent === false && this.showPdfComponent === false && this.showFileComponent === false) {
+                this.$refs.svgContainer.resetSvg();
+            }
             this.showSrcComponent = false;
             this.showPdfComponent = false;
             this.showFileComponent = false;
             this.$nextTick(async () => {
                 this.showPdfComponent = true;
-                this.file = new Uint8Array(await blob.arrayBuffer());
+                let file = args.data;
+                this.title = args.title;
+                this.file = new Uint8Array(await file.arrayBuffer());
                 this.$refs.pdfViewer.init();
             });
         },
         async openExternalSource(src) {
+            if (this.showSrcComponent === false && this.showPdfComponent === false && this.showFileComponent === false) {
+                this.$refs.svgContainer.resetSvg();
+            }
             this.showPdfComponent = false;
             this.showFileComponent = false;
             this.showSrcComponent = true;
@@ -116,6 +125,8 @@ export default {
             this.showSrcComponent = false;
             this.showFileComponent = false;
             this.$refs.svgPane.style["width"] = "100%";
+            this.$refs.svgContainer.resetSvg();
+            this.$refs.svgContainer.resetActiveNode();
         },
         enlargeSvg() {
             this.$refs.svgContainer.enlargeSvg();

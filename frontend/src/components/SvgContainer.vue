@@ -16,7 +16,8 @@
             return {
                 content: '',
                 pan: undefined,
-                linkIsDisabled: false
+                linkIsDisabled: false,
+                activeNode: undefined
             }
         },
         watch: {
@@ -61,7 +62,7 @@
                         maxZoom: 4,
                         minZoom: 0.4,
                         bounds: true,
-                        boundsPadding: 0.4,
+                        boundsPadding: 0.5,
                         smoothScroll: false
                     });
                 }
@@ -75,14 +76,26 @@
                         node = node.parentNode;
                     }
                     if (node.tagName === 'a') {
+                        this.setNewActiveNode(node);
                         let promise = await this.fetchFileByName(node.getAttribute('xlink:href'));
                         if (promise !== null) {
-                            this.$emit('openPdf', promise.data);
+                            this.$emit('openPdf', {data: promise.data, title: node.getAttribute('xlink:title')});
                         } else {
                             this.$emit('openExternalSource', node.getAttribute('xlink:href'));
                         }
                     }
                 }
+            },
+            setNewActiveNode(node) {
+                this.$refs.svg.children[0].classList.add('nonactiveNodes');
+                if (this.activeNode !== undefined) {
+                    this.activeNode.classList.remove('activeNode');
+                }
+                node.classList.add('activeNode');
+                this.activeNode = node;
+            },
+            resetActiveNode() {
+                this.$refs.svg.children[0].classList.remove('nonactiveNodes');
             },
             disableLinks() {
                 this.linkIsDisabled = true;
@@ -104,11 +117,17 @@
             },
             enablePan() {
                 this.pan.resume();
-            }
+            },
         }
     }
 </script>
-<style scoped>
+<style>
+    .activeNode {
+        fill-opacity: 100% !important;
+    }
+    .nonactiveNodes {
+        fill-opacity: 50%;
+    }
     .svg {
         height: 100vh;
     }
