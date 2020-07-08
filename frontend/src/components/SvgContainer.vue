@@ -17,7 +17,8 @@
                 content: '',
                 pan: undefined,
                 linkIsDisabled: false,
-                activeNode: undefined
+                activeNode: undefined,
+                svg: undefined
             }
         },
         watch: {
@@ -41,6 +42,9 @@
                 }
             }
         },
+        mounted() {
+            this.$eventBus.$on('changeActiveNode', this.setNewActiveNode);
+        },
         methods: {
             async fetchFileById(fileId) {
                 return this.$http.get(`/api/files/${fileId}`);
@@ -53,12 +57,12 @@
                 })
             },
             adjustSvgSize() {
-                let svg = this.$refs.svg.children[0];
-                if (svg != null) {
-                    svg.setAttribute("height", "100%");
-                    svg.setAttribute("width", "100%");
-                    this.$emit('updateLinkList', Array.from(svg.getElementsByTagName("a")));
-                    this.pan = this.$panzoom(svg, {
+                this.svg = this.$refs.svg.children[0];
+                if (this.svg != null) {
+                    this.svg.setAttribute("height", "100%");
+                    this.svg.setAttribute("width", "100%");
+                    this.$emit('updateLinkList', this.getLinkTags());
+                    this.pan = this.$panzoom(this.svg, {
                         maxZoom: 4,
                         minZoom: 0.4,
                         bounds: true,
@@ -66,6 +70,9 @@
                         smoothScroll: false
                     });
                 }
+            },
+            getLinkTags() {
+                return Array.from(this.svg.getElementsByTagName("a"))
             },
             async getLink(event) {
                 event.preventDefault();
@@ -87,15 +94,19 @@
                 }
             },
             setNewActiveNode(node) {
-                this.$refs.svg.children[0].classList.add('nonactiveNodes');
-                if (this.activeNode !== undefined) {
-                    this.activeNode.classList.remove('activeNode');
+                if (this.$refs.svg !== undefined) {
+                    this.$refs.svg.children[0].classList.add('nonactiveNodes');
+                    if (this.activeNode !== undefined) {
+                        this.activeNode.classList.remove('activeNode');
+                    }
+                    node.classList.add('activeNode');
+                    this.activeNode = node;
                 }
-                node.classList.add('activeNode');
-                this.activeNode = node;
             },
             resetActiveNode() {
-                this.$refs.svg.children[0].classList.remove('nonactiveNodes');
+                if (this.$refs.svg !== undefined) {
+                    this.$refs.svg.children[0].classList.remove('nonactiveNodes');
+                }
             },
             disableLinks() {
                 this.linkIsDisabled = true;

@@ -55,7 +55,7 @@
             }
         },
         created() {
-            this.$eventBus.$on('titleUpdated', this.titleUpdated)
+            this.$eventBus.$on('titleUpdated', this.titleUpdated);
         },
         methods: {
             titleUpdated(val) {

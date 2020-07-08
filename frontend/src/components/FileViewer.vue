@@ -7,7 +7,7 @@
                 hoverable
                 paginated pagination-position="top"
                 per-page="15"
-                @click="checkLinksCondition">
+                @click="checkLinksCondition(); setNewActiveNode($event)">
         </b-table>
         <file-uploader ref="fileUploader" class="m-t-xl"
                        v-on:checkLinksCondition="checkLinksCondition"
@@ -33,6 +33,8 @@
         components: {FileUploader},
         props: {
             files: {
+            },
+            links: {
             }
         },
         data() {
@@ -69,7 +71,6 @@
                 }
             },
             updateFile(newFile) {
-                console.log(newFile);
                 let formData = new FormData();
                     formData.append('files[0]', newFile);
                 this.$http.post(`/api/files/${this.selected.id}`, formData)
@@ -94,6 +95,16 @@
                 this.isDisabled = true;
                 this.$refs.fileUploader.resetDropFiles()
             },
+            setNewActiveNode(file) {
+                this.links.forEach(link => {
+                    if (this.getBaseName(link.getAttribute('xlink:href')) === file.name) {
+                        this.$eventBus.$emit("changeActiveNode", link)
+                    }
+                })
+            },
+            getBaseName(str) {
+                return str.substr(str.lastIndexOf("\\") + 1);
+            }
         }
     }
 </script>

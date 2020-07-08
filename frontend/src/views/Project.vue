@@ -42,7 +42,7 @@
             <pdf-viewer v-if="showPdfComponent" v-bind:file="file" v-bind:title="title" ref="pdfViewer"
             v-on:downloadFile="downloadFile"></pdf-viewer>
             <src-viewer v-if="showSrcComponent" v-bind:src="src" ref="srcViewer"></src-viewer>
-            <file-viewer v-if="showFileComponent" v-bind:files="project.files" ref="fileViewer"></file-viewer>
+            <file-viewer v-if="showFileComponent" v-bind:files="project.files" v-bind:links="links" ref="fileViewer"></file-viewer>
         </div>
     </multipane>
 </template>
@@ -67,6 +67,7 @@ export default {
             file: null,
             title: undefined,
             src: undefined,
+            links: undefined,
             showPdfComponent: false,
             showSrcComponent: false,
             showFileComponent: false,
@@ -119,6 +120,8 @@ export default {
             this.showPdfComponent = false;
             this.showSrcComponent = false;
             this.showFileComponent = true;
+            this.$refs.svgContainer.resetActiveNode();
+            this.links = this.$refs.svgContainer.getLinkTags();
         },
         hideComponent() {
             this.showPdfComponent = false;
