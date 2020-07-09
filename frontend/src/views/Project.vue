@@ -1,40 +1,13 @@
 <template>
     <multipane class="vertical-panes" layout="vertical">
         <div class="pane" ref="svgPane" :style="{ minWidth: '30%', width: '100%'}" @mousedown.stop>
-            <div class="buttons svgControls">
-                <b-tooltip type="is-link" label="Show Files"
-                           position="is-bottom"
-                           animated>
-                    <b-button size="is-medium" icon-left="file" @click="showFiles()">
-                    </b-button>
-                </b-tooltip>
-                <b-tooltip type="is-link" label="Enlarge"
-                           position="is-bottom"
-                           animated>
-                    <b-button size="is-medium" icon-left="plus" @click="enlargeSvg()">
-                    </b-button>
-                </b-tooltip>
-                <b-tooltip type="is-link" label="Reduce"
-                           position="is-bottom"
-                           animated>
-                    <b-button size="is-medium" icon-left="minus" @click="reduceSvg()">
-                    </b-button>
-                </b-tooltip>
-                <b-tooltip type="is-link" label="Reset"
-                           position="is-bottom"
-                           animated>
-                    <b-button size="is-medium" icon-left="expand-alt" @click="resetSvg()">
-                    </b-button>
-                </b-tooltip>
-                <b-tooltip type="is-link" label="Close Viewer"
-                           position="is-bottom"
-                           animated>
-                    <b-button v-if="showPdfComponent || showSrcComponent || showFileComponent || showImgComponent"
-                              size="is-medium" icon-left="eye-slash"
-                              @click="hideComponent()">
-                    </b-button>
-                </b-tooltip>
-            </div>
+            <svg-controls v-bind:args="projectControlArgs"
+                          v-on:showFiles="showFiles"
+                          v-on:enlargeSvg="enlargeSvg"
+                          v-on:reduceSvg="reduceSvg"
+                          v-on:resetSvg="resetSvg"
+                          v-on:hideComponent="hideComponent">
+            </svg-controls>
             <svg-container ref="svgContainer" class="svgContainer" :fileId=fileId
                            v-on:openFile="openFile"
                            v-on:openExternalSource="openExternalSource">
@@ -69,12 +42,13 @@ import PdfViewer from "@/components/PdfViewer";
 import SrcViewer from "@/components/SrcViewer";
 import FileViewer from "@/components/FileViewer";
 import ImgViewer from "@/components/ImgViewer";
+import SvgControls from "@/components/SvgControls";
 export default {
     name: 'Project',
     props: {
         id: null
     },
-    components: {SvgContainer, PdfViewer, SrcViewer, FileViewer, ImgViewer, Multipane, MultipaneResizer},
+    components: {SvgContainer, PdfViewer, SrcViewer, FileViewer, ImgViewer, SvgControls, Multipane, MultipaneResizer},
     data() {
         return {
             project: Object,
@@ -87,6 +61,16 @@ export default {
             showSrcComponent: false,
             showFileComponent: false,
             showImgComponent: false,
+        }
+    },
+    computed: {
+        projectControlArgs() {
+            return {
+                showPdfComponent: this.showPdfComponent,
+                showSrcComponent: this.showSrcComponent,
+                showFileComponent: this.showFileComponent,
+                showImgComponent: this.showImgComponent
+            }
         }
     },
     created() {
