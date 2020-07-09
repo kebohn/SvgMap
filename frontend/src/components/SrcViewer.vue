@@ -1,5 +1,17 @@
 <template>
-    <iframe :src="src" class="iframeContainer"></iframe>
+    <b-notification class="wrapper" :closable="false">
+        <section class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column">
+                        <figure class="image">
+                            <iframe :src="src" class="iframeContainer"></iframe>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </b-notification>
 </template>
 
 <script>
@@ -12,9 +24,11 @@
     }
 </script>
 <style scoped>
-    .iframeContainer {
+    .wrapper {
         height: 100vh;
-        width: 100vh;
+    }
+    .iframeContainer {
+        width: 100%;
     }
     .iframeContainer:focus {
         outline-color: rgba(255, 255, 255, 0);

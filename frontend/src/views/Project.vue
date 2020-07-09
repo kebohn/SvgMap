@@ -29,20 +29,34 @@
                 <b-tooltip type="is-link" label="Close Viewer"
                            position="is-bottom"
                            animated>
-                    <b-button v-if="showPdfComponent || showSrcComponent || showFileComponent"  size="is-medium" icon-left="eye-slash"
+                    <b-button v-if="showPdfComponent || showSrcComponent || showFileComponent || showImgComponent"
+                              size="is-medium" icon-left="eye-slash"
                               @click="hideComponent()">
                     </b-button>
                 </b-tooltip>
             </div>
-            <svg-container ref="svgContainer" class="svgContainer" :fileId=fileId v-on:openPdf="openPdf"
-                                        v-on:openExternalSource="openExternalSource"></svg-container>
+            <svg-container ref="svgContainer" class="svgContainer" :fileId=fileId
+                           v-on:openFile="openFile"
+                           v-on:openExternalSource="openExternalSource">
+            </svg-container>
         </div>
-        <multipane-resizer v-if="showPdfComponent || showSrcComponent || showFileComponent"></multipane-resizer>
-        <div class="pane" :style="{ minWidth: '40%', flexGrow: 1}" v-if="showPdfComponent || showSrcComponent || showFileComponent">
-            <pdf-viewer v-if="showPdfComponent" v-bind:file="file" v-bind:title="title" ref="pdfViewer"
-            v-on:downloadFile="downloadFile"></pdf-viewer>
+        <multipane-resizer v-if="showPdfComponent || showSrcComponent || showFileComponent || showImgComponent">
+        </multipane-resizer>
+        <div class="pane" :style="{ minWidth: '40%', flexGrow: 1}"
+             v-if="showPdfComponent || showSrcComponent || showFileComponent || showImgComponent">
+            <pdf-viewer v-if="showPdfComponent" v-bind:file="file" v-bind:title="title"
+                        v-on:downloadFile="downloadFile"
+                        ref="pdfViewer"
+            ></pdf-viewer>
             <src-viewer v-if="showSrcComponent" v-bind:src="src" ref="srcViewer"></src-viewer>
-            <file-viewer v-if="showFileComponent" v-bind:files="project.files" v-bind:links="links" ref="fileViewer"></file-viewer>
+            <file-viewer v-if="showFileComponent" v-bind:files="project.files"
+                         v-bind:links="links"
+                         ref="fileViewer">
+            </file-viewer>
+            <img-viewer v-if="showImgComponent" v-bind:src="src" v-bind:title="title"
+                        v-on:downloadFile="downloadFile"
+                        ref="imgViewer">
+            </img-viewer>
         </div>
     </multipane>
 </template>
@@ -54,12 +68,13 @@ import SvgContainer from "@/components/SvgContainer";
 import PdfViewer from "@/components/PdfViewer";
 import SrcViewer from "@/components/SrcViewer";
 import FileViewer from "@/components/FileViewer";
+import ImgViewer from "@/components/ImgViewer";
 export default {
     name: 'Project',
     props: {
         id: null
     },
-    components: {SvgContainer, PdfViewer, SrcViewer, FileViewer, Multipane, MultipaneResizer },
+    components: {SvgContainer, PdfViewer, SrcViewer, FileViewer, ImgViewer, Multipane, MultipaneResizer},
     data() {
         return {
             project: Object,
@@ -71,6 +86,7 @@ export default {
             showPdfComponent: false,
             showSrcComponent: false,
             showFileComponent: false,
+            showImgComponent: false,
         }
     },
     created() {
@@ -92,19 +108,28 @@ export default {
                 }
             });
         },
-        async openPdf(args) {
+        async openFile(args) {
             if (this.showSrcComponent === false && this.showPdfComponent === false && this.showFileComponent === false) {
                 this.$refs.svgContainer.resetSvg();
             }
             this.showSrcComponent = false;
             this.showPdfComponent = false;
             this.showFileComponent = false;
+            this.showImgComponent = false;
             this.$nextTick(async () => {
-                this.showPdfComponent = true;
-                let file = args.data;
                 this.title = args.title;
-                this.file = new Uint8Array(await file.arrayBuffer());
-                this.$refs.pdfViewer.init();
+                let ext = args.title.split('.').pop().toLowerCase();
+                if (ext === 'pdf') {
+                    this.showPdfComponent = true;
+                    this.file = new Uint8Array(await args.data.arrayBuffer());
+                    this.$refs.pdfViewer.init();
+                } else if (ext === 'jpg' || ext === 'png' || ext === 'jpeg') {
+                    this.showImgComponent = true;
+                    this.file = await args.data.arrayBuffer();
+                    this.src = URL.createObjectURL(args.data) ;
+                } else {
+                    console.log("asd")
+                }
             });
         },
         async openExternalSource(src) {
@@ -113,13 +138,15 @@ export default {
             }
             this.showPdfComponent = false;
             this.showFileComponent = false;
+            this.showImgComponent = false;
             this.showSrcComponent = true;
-            this.src = src;
+            this.src = src
         },
         showFiles() {
             this.showPdfComponent = false;
             this.showSrcComponent = false;
             this.showFileComponent = true;
+            this.showImgComponent = false;
             this.$refs.svgContainer.resetActiveNode();
             this.links = this.$refs.svgContainer.getLinkTags();
         },
@@ -127,6 +154,7 @@ export default {
             this.showPdfComponent = false;
             this.showSrcComponent = false;
             this.showFileComponent = false;
+            this.showImgComponent = false;
             this.$refs.svgPane.style["width"] = "100%";
             this.$refs.svgContainer.resetSvg();
             this.$refs.svgContainer.resetActiveNode();
@@ -140,11 +168,11 @@ export default {
         resetSvg() {
             this.$refs.svgContainer.resetSvg();
         },
-        downloadFile() {
+        downloadFile(args) {
             let fileURL = window.URL.createObjectURL(new Blob([this.file]));
             let fileLink = document.createElement('a');
             fileLink.href = fileURL;
-            fileLink.setAttribute('download', 'download.pdf');
+            fileLink.setAttribute('download', args.title);
             document.body.appendChild(fileLink);
             fileLink.click();
         }

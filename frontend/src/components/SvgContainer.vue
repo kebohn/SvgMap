@@ -86,7 +86,7 @@
                         this.setNewActiveNode(node);
                         let promise = await this.fetchFileByName(node.getAttribute('xlink:href'));
                         if (promise !== null) {
-                            this.$emit('openPdf', {data: promise.data, title: node.getAttribute('xlink:title')});
+                            this.$emit('openFile', {data: promise.data, title: node.getAttribute('xlink:title')});
                         } else {
                             this.$emit('openExternalSource', node.getAttribute('xlink:href'));
                         }
