@@ -60,7 +60,7 @@ export default {
             showPdfComponent: false,
             showSrcComponent: false,
             showFileComponent: false,
-            showImgComponent: false,
+            showImgComponent: false
         }
     },
     computed: {
@@ -107,12 +107,15 @@ export default {
                     this.showPdfComponent = true;
                     this.file = new Uint8Array(await args.data.arrayBuffer());
                     this.$refs.pdfViewer.init();
-                } else if (ext === 'jpg' || ext === 'png' || ext === 'jpeg') {
+                } else {
                     this.showImgComponent = true;
                     this.file = await args.data.arrayBuffer();
-                    this.src = URL.createObjectURL(args.data) ;
-                } else {
-                    console.log("asd")
+                    if (ext === 'jpg' || ext === 'png' || ext === 'jpeg') {
+                        this.src = URL.createObjectURL(args.data);
+                    } else {
+                        this.src = require('@/assets/images/noPreview.jpg')
+                        console.log(this.src)
+                    }
                 }
             });
         },
@@ -129,8 +132,8 @@ export default {
         showFiles() {
             this.showPdfComponent = false;
             this.showSrcComponent = false;
-            this.showFileComponent = true;
             this.showImgComponent = false;
+            this.showFileComponent = true;
             this.$refs.svgContainer.resetActiveNode();
             this.links = this.$refs.svgContainer.getLinkTags();
         },

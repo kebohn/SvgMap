@@ -1,15 +1,14 @@
 <template>
     <b-notification class="wrapper" :closable="false">
+        <b-loading :is-full-page="false" :active.sync="isLoading">
+            <b-icon icon="sync-alt" size="is-large" custom-class="fa-spin">
+            </b-icon>
+        </b-loading>
         <section class="section ">
             <div class="container">
-
-                <viewer-controls v-bind:title="title" v-on:downloadFile="downloadFile"
+                <viewer-controls v-if="!isLoading" v-bind:title="title" v-on:downloadFile="downloadFile"
                                  v-on:setZoomVal="setZoomVal">
                 </viewer-controls>
-                <b-loading :is-full-page="false" :active.sync="isLoading">
-                    <b-icon icon="sync-alt" size="is-large" custom-class="fa-spin">
-                    </b-icon>
-                </b-loading>
                 <b-pagination v-if="!isLoading"
                               :total="numPages"
                               :current.sync="current"
