@@ -30,6 +30,7 @@ Vue.use(VueRouter)
 Vue.prototype.$http = axios
 
 Vue.prototype.$eventBus = new Vue()
+axios.defaults.baseURL = 'http://localhost:3000'
 
 Vue.prototype.$panzoom = panzoom
 
