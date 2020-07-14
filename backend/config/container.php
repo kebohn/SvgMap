@@ -17,8 +17,6 @@ return [
     App::class => function (ContainerInterface $container) {
         AppFactory::setContainer($container);
         $app = AppFactory::create();
-
-
         return $app;
     },
 
