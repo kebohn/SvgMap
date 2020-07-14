@@ -3,6 +3,7 @@ import AboutPage from '@/views/About.vue'
 import ProjectsPage from '@/views/Projects.vue'
 import ProjectPage from '@/views/Project.vue'
 import NotFoundPage from '@/views/NotFound.vue'
+import Login from '@/views/Login.vue'
 import ProjectUpload from "@/views/ProjectUpload";
 import Impressum from "@/views/Impressum";
 import Datenschutz from "@/views/Datenschutz";
@@ -17,6 +18,7 @@ const router = new VueRouter({
         { path: '/upload', component: ProjectUpload},
         { path: '/impressum', component: Impressum},
         { path: '/datenschutz', component: Datenschutz},
+        { path: '/login', component: Login},
         { path: '/*', component: NotFoundPage},
     ]
 })
