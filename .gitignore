@@ -6,3 +6,5 @@
 *.njsproj
 *.sln
 *.sw?
+*.env
+/backend/setup/init.sql

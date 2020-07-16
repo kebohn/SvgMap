@@ -27,8 +27,7 @@
                 <b-checkbox>Remember me</b-checkbox>
             </section>
             <footer class="modal-card-foot">
-                <button class="button" type="button" @click="$parent.close()">Close</button>
-                <button class="button is-primary">Login</button>
+                <button class="button is-link">Login</button>
             </footer>
         </div>
     </form>

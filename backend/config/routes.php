@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 
 use Slim\App;
+use App\Action\Auth\TokenCreateAction;
 use App\Action\PreflightAction;
 use App\Controllers\FileController;
 use App\Controllers\HomeController;
@@ -66,12 +67,14 @@ return function (App $app) {
         $group->post('/files/{fileId}', FileController::class . ':exchangeFile');
         $group->delete('/files/{fileId}', FileController::class . ':deleteFile');
 
+        $group->post('/tokens', TokenCreateAction::class);
+
         $group->options('/{routes:.+}', PreflightAction::class);
     });
 
     /**
      * Catch-all route to serve a 404 Not Found page if none of the routes match
-     * NOTE: make sure this route is defined last
+     * must be defined last
      */
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
         throw new HttpNotFoundException($request);

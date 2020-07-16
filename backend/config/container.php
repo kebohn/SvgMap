@@ -1,8 +1,10 @@
 <?php
 
+use App\Auth\JwtAuth;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Selective\Config\Configuration;
 use Slim\App;
 use Slim\Factory\AppFactory;
@@ -47,6 +49,18 @@ return [
 
     EntityManager::class => function(ContainerInterface $c){
         return $c->get('db');
-    }
+    },
 
+    ResponseFactoryInterface::class => function (ContainerInterface $container) {
+        return $container->get(App::class)->getResponseFactory();
+    },
+
+    JwtAuth::class => function (ContainerInterface $container) {
+        $config = $container->get('settings')['jwt'];
+        $issuer = (string)$config['issuer'];
+        $lifetime = (int)$config['lifetime'];
+        $privateKey = (string)$config['private_key'];
+        $publicKey = (string)$config['public_key'];
+        return new JwtAuth($issuer, $lifetime, $privateKey, $publicKey);
+    },
 ];
