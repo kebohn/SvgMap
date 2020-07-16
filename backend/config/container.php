@@ -56,7 +56,7 @@ return [
     },
 
     JwtAuth::class => function (ContainerInterface $container) {
-        $config = $container->get('settings')['jwt'];
+        $config = $container->get(Configuration::class)->getArray('jwt');
         $issuer = (string)$config['issuer'];
         $lifetime = (int)$config['lifetime'];
         $privateKey = (string)$config['private_key'];

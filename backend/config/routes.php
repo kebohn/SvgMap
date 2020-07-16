@@ -1,6 +1,7 @@
 <?php
 declare(strict_types = 1);
 
+use App\Middleware\JwtAuthMiddleware;
 use Slim\App;
 use App\Action\Auth\TokenCreateAction;
 use App\Action\PreflightAction;
@@ -58,16 +59,22 @@ return function (App $app) {
         });
 
         $group->get('/projects', ProjectController::class . ':getProjects');
-        $group->post('/projects', ProjectController::class . ':createProject');
+        $group->post('/projects', ProjectController::class . ':createProject')->add(JwtAuthMiddleware::class);
         $group->get('/projects/{projectId}', ProjectController::class . ':getProject');
-        $group->delete('/projects/{projectId}', ProjectController::class . ':deleteProject');
+        $group->delete('/projects/{projectId}', ProjectController::class . ':deleteProject')->add(JwtAuthMiddleware::class);
 
         $group->get('/files/{fileId}', FileController::class . ':getFile');
         $group->get('/files/{projectId}/file', FileController::class . ':getFile');
-        $group->post('/files/{fileId}', FileController::class . ':exchangeFile');
-        $group->delete('/files/{fileId}', FileController::class . ':deleteFile');
+        $group->post('/files/{fileId}', FileController::class . ':exchangeFile')->add(JwtAuthMiddleware::class);
+        $group->delete('/files/{fileId}', FileController::class . ':deleteFile')->add(JwtAuthMiddleware::class);
 
         $group->post('/tokens', TokenCreateAction::class);
+        $group->get('/logout', function (Request $request, Response $response) {
+            return $response->withHeader(
+                'Set-Cookie',
+                'Authentication=; HttpOnly; Secure; Path=/; Max-Age=0'
+            );
+        });
 
         $group->options('/{routes:.+}', PreflightAction::class);
     });
